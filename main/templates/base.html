@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/static/favicon.ico">
+
+    <title>{% block title %}YTest{% endblock %}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap336/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+    {% include "nav.html" %}
+
+    <div id="main_container" class="container">
+    {% block content %}
+
+        <h3>A test tools suite</h3>
+        <p>just a test.<br> find more.</p>
+
+    {% endblock %}
+    </div>
+    </div><!-- /.container -->
+
+</body>
+
+    <!-- jquery JavaScript -->
+    <!--<script src="/static/bootstrap336/js/jquery-1.11.3.min.js"></script>-->
+    <script type="text/javascript" src="/static/vendor/jquery-1.11.3.min.js"></script>
+    <script src="/static/sidebar/js/index.js"></script>
+    
+    <!-- Bootstrap core JavaScript -->
+    {% block cus_scripts %}
+
+    {% endblock %}
+
+    <script src="/static/vendor/bootstrap336/js/bootstrap.min.js"></script>
+
+
+{% block afterbody %}
+
+    <!-- Other JavaScript -->
+
+{% endblock afterbody %}
+
+</html>

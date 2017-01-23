@@ -1,0 +1,87 @@
+{% load static %}
+<!-- Top Nav bar -->
+<nav id="topbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container center-block">
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li><a class="navbar-brand" href="#">YTest</a></li>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Test <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                    <li><a href="#">admin</a></li>
+                    <li><a href="#">ModTest</a></li>
+                    <li><a href="#">ChangeAvatar</a></li>
+                    <li><a href="#">FileUpload</a></li>
+                    <li><a href="#">Test3</a></li>
+                    <li><a href="#">Moderate Comments</a></li>
+            </ul>
+            </li>
+            <li><a href="#">Polls</a></li>
+            <li><a href="#">Other</a></li>
+        </ul>
+
+
+        <ul id="nav_right" class="nav navbar-nav navbar-right">
+
+            {% if user.is_authenticated %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account
+                    <img src="/static/me.ico" with="20" height="20">
+                    <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">MyInfo</a></li>
+                    <li><a href="#">Change Password</a></li>
+                    <li><a href="#">Change Email</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Logout</a></li>
+            {% else %}
+            <li><a href="/login">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    </div>
+</nav>
+
+<!--Side bar -->
+<link rel="stylesheet" href="/static/sidebar/css/sidebar.css">
+<nav class='sidebar sidebar-menu-expanded'>
+      <a href='#' id='justify-icon'>
+        <span class='glyphicon glyphicon-align-justify'></span>
+      </a>
+      <ul>
+        <li class='active'>
+          <a class='expandable' href='#' title='Dashboard'>
+            <span class='glyphicon glyphicon-home expanded-element'></span>
+            <span class='expanded-element'>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a class='expandable' href='#' title='APIs'>
+            <span class='glyphicon glyphicon-wrench expanded-element'></span>
+            <span class='expanded-element'>APIs</span>
+          </a>
+        </li>
+        <li>
+          <a class='expandable' href='#' title='Settings'>
+            <span class='glyphicon glyphicon-cog expanded-element'></span>
+            <span class='expanded-element'>Settings</span>
+          </a>
+        </li>
+        <li>
+          <a class='expandable' href='#' title='Account'>
+            <span class='glyphicon glyphicon-user expanded-element'></span>
+            <span class='expanded-element'>Account</span>
+          </a>
+        </li>
+      </ul>
+      <a href='#' id='logout-icon' title='Logout'>
+        <span class='glyphicon glyphicon-off'></span>
+      </a>
+    </nav>
+
+    
+
+
+
