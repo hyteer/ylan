@@ -1,0 +1,32 @@
+{% extends 'demo/bootstrap.html' %}
+
+{% load bootstrap3 %}
+
+{% block bootstrap3_content %}
+    <div class="container">
+        <h1>{% block title %}(no title){% endblock %}</h1>
+
+        <div class="container center-block">
+          <ul class="nav navbar-nav">
+            <li><a href="{% url 'home' %}">MainHome</a></li>
+            <li><a href="{% url 'demo:home' %}">home</a></li>
+            <li><a href="{% url 'demo:form_default' %}">form</a></li>
+            <li><a href="{% url 'demo:formset_default' %}">formset</a></li>
+            <li><a href="{% url 'demo:form_inline' %}">form_inline</a></li>
+            <li><a href="{% url 'demo:form_with_files' %}">form_with_files</a></li>
+            <li><a href="{% url 'demo:pagination' %}">pagination</a></li>
+            <li><a href="{% url 'demo:misc' %}">miscellaneous</a></li>
+            <li><a href="{% url 'demo:datetime' %}">Datetime</a></li>
+          </ul>
+        </div><br>
+
+        {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
+
+        {% block content %}(no content){% endblock %}
+    </div>
+
+{% endblock %}
+
+{% block bootstrap3_extra_script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}

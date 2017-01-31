@@ -10,3 +10,7 @@ def home(req):
 def login(req):
 	return render(req, 'login.html')
 
+################### Test #####################
+
+def test(req):
+	return render(req, 'test.html')
