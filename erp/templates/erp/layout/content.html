@@ -1,0 +1,13 @@
+<!-- Default Content header -->
+
+  <h3>页面内容</h3>
+  Username: {{ user.groups.all.first.name }}<br>
+  {% ifequal user.groups.all.first.name 'managers' %}
+    Your are managers...
+  {% endifequal %}
+  <p>usertype:{{ request.session.usertype }}</p>
+  {% for key,value in request.session.items %}
+    {% ifequal 'usertype' key %}
+      Usertype: {{ value }}
+    {% endifequal %}
+  {% endfor %}

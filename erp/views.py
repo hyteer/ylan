@@ -18,7 +18,12 @@ userTypes = {
 @login_required(redirect_field_name='/erp/login')
 def index(req):
     #import pdb; pdb.set_trace()
-    return render(req, 'erp/starter.html')
+    return render(req, 'erp/index.html')
+
+@login_required(redirect_field_name='/erp/login')
+def test(req):
+    #import pdb; pdb.set_trace()
+    return render(req, 'erp/test.html')
 
 def user_login(req):
     if req.method == 'POST':
@@ -60,3 +65,12 @@ def user_logout(req):
 
 def register(req):
 	return render(req, 'erp/register.html')
+
+@login_required(redirect_field_name='/erp/login')
+def customer(req):
+    #import pdb; pdb.set_trace()
+    return render(req, 'erp/customer.html')
+
+@login_required(redirect_field_name='/erp/login')
+def consign(req):
+    return render(req, 'erp/consign.html')
