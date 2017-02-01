@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Starter</title>
+  <title>永兰科技 | YLTek</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -31,6 +31,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
+
 <!--
 BODY TAG OPTIONS:
 =================
@@ -62,7 +63,7 @@ desired effect
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>Y</b>LT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>YL</b>Tek</span>
+      <span class="logo-lg"><b>永兰科技</b>-YLTek</span>
     </a>
 
     <!-- Header Navbar -->
@@ -206,10 +207,10 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat">个人资料</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="/erp/logout" class="btn btn-default btn-flat">退出</a>
                 </div>
               </li>
             </ul>
@@ -222,7 +223,8 @@ desired effect
       </div>
     </nav>
   </header>
-  <!-- Left side column. contains the logo and sidebar -->
+
+<!-- Left side column. contains the logo and sidebar --------------------->
   <aside class="main-sidebar">
 
     <!-- sidebar: style can be found in sidebar.less -->
@@ -256,10 +258,12 @@ desired effect
       <ul class="sidebar-menu">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>信息面板</span></a></li>
+        <li><a href="#"><i class="fa fa-link"></i> <span>产品管理{{ usertype }}</span></a></li>
+
+
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
+          <a href="#"><i class="fa fa-link"></i> <span>仓储管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -269,6 +273,13 @@ desired effect
             <li><a href="#">Link in level 2</a></li>
           </ul>
         </li>
+
+        <li><a href="#"><i class="fa fa-link"></i> <span>个人信息</span></a></li>
+
+        {% ifequal user.groups.all.first.name 'managers' %}
+        <li><a href="#"><i class="fa fa-link"></i> <span>客户管理</span></a></li>
+        {% endifequal %}
+
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -289,9 +300,19 @@ desired effect
       </ol>
     </section>
 
-    <!-- Main content -->
+<!-- Main content ------------------------------------------------->
     <section class="content">
-
+      <h3>页面内容</h3>
+      Username: {{ user.groups.all.first.name }}<br>
+      {% ifequal user.groups.all.first.name 'managers' %}
+        Your are managers...
+      {% endifequal %}
+      <p>usertype:{{ request.session.usertype }}</p>
+      {% for key,value in request.session.items %}
+      	{% ifequal 'usertype' key %}
+      		Usertype: {{ value }}
+      	{% endifequal %}
+      {% endfor %}
       <!-- Your Page Content Here -->
 
     </section>
