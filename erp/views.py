@@ -28,27 +28,18 @@ def test(req):
     if req.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = NameForm(req.POST)
-        # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
             return HttpResponseRedirect('/thanks/')
-
-    # if a GET (or any other method) we'll create a blank form
     else:
         nameform = NameForm()
         contactform = ContactForm()
-    return render(req, 'erp/test.html',{'nameform':nameform,'form':contactform})
+    #return render(req, 'erp/test.html',{'nameform':nameform,'form':contactform})
+    return render(req, 'erp/bootsdemo.html',{'form':nameform})
 
+#### 用户登录 ####
 def user_login(req):
     if req.method == 'POST':
-        #messages.info(req, '欢迎登录使用!')
-        #import pdb; pdb.set_trace()
-        #return HttpResponseRedirect('/erp')
-        #return render(req, 'erp/starter.html')
-
-		#form = LoginForm(req.POST)
 
         username = req.POST['username']
         password = req.POST['password']
@@ -56,24 +47,16 @@ def user_login(req):
         #password = form.cleaned_data['password']
         user = authenticate(username=username, password=password)
 
-        if user is not None:
-            login(req, user)
-            if req.user.is_superuser == True:
-                usertype = 99
-            elif user.groups.all().first() is None:
-                user_type = 0
+        if user is not None and hasattr(user,'customer'):
+            if user.customer.status == 0:
+                return HttpResponse('账号已经停用')
             else:
-                user_type = userTypes.get(user.groups.all().first().name)
-            req.session['usertype'] = user_type
-            #req.session.save()
-            return HttpResponseRedirect('/erp')
-            #return render(req, 'erp/starter.html')
+                login(req, user)
+                return HttpResponseRedirect('/erp')
         else:
             return HttpResponse('Invalid login.')
-
     else:
-        #form = LoginForm()
-        #return render(req, 'crm/login.html', {'form': form})
+
         return render(req, 'erp/login.html')
 
 def user_logout(req):
@@ -83,20 +66,30 @@ def user_logout(req):
 def register(req):
 	return render(req, 'erp/register.html')
 
+def userinfo(req):
+    if req.method == 'POST':
+        return HttpResponse('test....')
+    else:
+        return HttpResponse('recieved your request.')
+
+#### 客户管理页 ####
 @login_required(redirect_field_name='/erp/login')
 def customer(req):
+    cutomers = Customer.objects.all()
+    form = AddCustomerForm()
+    return render(req, 'erp/customer.html',{'customers':cutomers,'form':form})
+
+#### 添加客户 ####
+@login_required(redirect_field_name='/erp/login')
+def add_customer(req):
     if req.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = AddCustomerForm(req.POST)
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
             return HttpResponseRedirect('/thanks/')
-    else:
-        form = AddCustomerForm()
-    return render(req, 'erp/customer.html',{'form':form})
+    return render(req, 'erp/customer.html')
 
 @login_required(redirect_field_name='/erp/login')
 def consign(req):

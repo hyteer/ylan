@@ -7,16 +7,59 @@
 {% endblock %}
 
 {% block content %}
-  <div>
-  	<a href="#">Get Name</a>|<a href="#">Secret</a>
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-      <p>Please login to see this page.</p>
 
-      <form action="#">
-        {{ form.as_p }}
-        <input type="submit" value="Submit" />
-      </form>
-
+<div class="row">
+  <div class="col-lg-1 col-md-3">
+    <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#addUser">添加</button>
   </div>
+  <div class="col-lg-1 col-md-3">
+    <button id="testEvent" type="button" class="btn btn-block btn-primary">Test</button>
+  </div>
+</div>
+  <!-- Customer List -->
+  {% include "erp/customer/list.html" %}
+  {% include "erp/customer/add.html" %}
+  <!-- 模态框（Modal） -->
+  {% include "erp/customer/edit.html" %}
+
+{% block scripts %}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#testEvent2").click(function(){
+    //$(this).hide();
+    axios.get('/erp/userinfo', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+    })
+  .then(function (response) {
+    console.log(response);
+    })
+  });
+});
+$(document).ready(function(){
+  $('#addUser').on('show.bs.modal', function () {
+    alert("Hi!!!");
+  });
+});
+
+$(function() {
+  $("#myDiv div").click(function(){ //如何设置点击哪一个div就执行哪个
+   //代码
+  });
+});
+
+
+$("#userlist tr td").each(function (i) {
+  $(this).click(function(){
+    console.log("索引："+$(this).index()+"\nUser:"+$(this).parents("tr").attr('name'));
+    alert("内容："+$(this).parents("tr").html());
+   });
+});
+
+
+</script>
+
+{% endblock %}
+
 {% endblock %}

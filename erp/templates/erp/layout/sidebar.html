@@ -55,9 +55,9 @@
 
       <li><a href="#"><i class="fa fa-file-text"></i> <span>财务统计</span></a></li>
 
-      {% ifequal user.groups.all.first.name 'managers' %}
+      {% if user.customer.role.id >= 2 %}
       <li><a href="/erp/customer"><i class="fa fa-group"></i> <span>客户管理</span></a></li>
-      {% endifequal %}
+      {% endif %}
 
     </ul>
     <!-- /.sidebar-menu -->

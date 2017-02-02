@@ -1,17 +1,12 @@
 <!-- Default Content header -->
 
   <h3>页面内容</h3>
-  Username: {{ user.groups.all.first.name }}<br>
-  {% ifequal user.groups.all.first.name 'managers' %}
-    Your are managers...
-  {% endifequal %}
-  <p>usertype:{{ request.session.usertype }}</p>
-  {% for key,value in request.session.items %}
-    {% ifequal 'usertype' key %}
-      Usertype: {{ value }}
-    {% endifequal %}
-  {% endfor %}
+  <p>Username: {{ user.customer.name }}</p>
+  <p>Role Name:{{ user.customer.role.id }}</p>
+  <p>Role ID: {{ user.customer.role.id }}</p>
 
-{% if request.session.usertype >= 1 %}
-  <p>usertype 大于或等于1</p>
+{% if user.customer.role.id >= 1 %}
+  <p>角色权限大于或等于1</p>
+{% else %}
+  <p>角色权限为0</p>
 {% endif %}

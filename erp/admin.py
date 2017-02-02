@@ -16,12 +16,13 @@ class CustomerAdmin(admin.ModelAdmin):
     	('电话', {'fields': ['phone']}),
     	('Email', {'fields': ['email']}),
     	('地址', {'fields': ['address']}),
+        ('Status', {'fields': ['status']}),
     	('备注', {'fields': ['remark'], 'classes': ['collapse']}),
     	('Country', {'fields': ['country']}),
     ]
     #inlines = ('客户类型', {'fields':[FollowRecordsInline]})
     #inlines = [FollowRecordsInline]
-    list_display = ('display_name', 'user', 'role_name', 'phone', 'email', 'country','address')
+    list_display = ('display_name', 'user', 'role_name', 'phone', 'email', 'country','status')
     #fields = ['question_text','pub_date']
     list_filter = ['country']
     search_fields = ['name']

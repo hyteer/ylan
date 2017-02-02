@@ -14,6 +14,7 @@ class Customer(models.Model):
     address = models.CharField(max_length=100,null=True, blank=True)
     district = models.CharField(max_length=30,null=True, blank=True)
     country = models.ForeignKey("Country", null=True, blank=True)
+    status = models.IntegerField(default=1)
     remark = models.TextField(blank=True, null=True)
     def __unicode__(self):
         if self.name:
@@ -24,6 +25,11 @@ class Customer(models.Model):
         return self.name
     def role_name(self):
         return self.role.name
+    def status_name(self):
+        if self.status == 0:
+            return '禁用'
+        else:
+            return '正常'
     display_name.short_description = '姓名'
     role_name.short_description = '角色'
 

@@ -1,0 +1,29 @@
+
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">编辑用户</h4>
+            </div>
+            <div class="modal-body">输入用户信息</div>
+            <div>
+              <a href="#">Get Name</a>|<a href="#">Secret</a>
+                <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+                <p>Please login to see this page.</p>
+
+                <form action="#">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <input type="submit" value="Submit" />
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
