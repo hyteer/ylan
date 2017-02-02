@@ -8,9 +8,15 @@
 
 {% block content %}
   <div>
-	<a href="#">Get Name</a>|<a href="#">Secret</a>
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    <p>Please login to see this page.</p>
+  	<a href="#">Get Name</a>|<a href="#">Secret</a>
+      <p>Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+      <p>Please login to see this page.</p>
+
+      <form action="#">
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+      </form>
+
   </div>
 {% endblock %}

@@ -11,3 +11,7 @@
       Usertype: {{ value }}
     {% endifequal %}
   {% endfor %}
+
+{% if request.session.usertype >= 1 %}
+  <p>usertype 大于或等于1</p>
+{% endif %}
