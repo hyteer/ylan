@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -66,17 +62,16 @@ desired effect
       <li><a href="/erp"><i class="fa fa-home"></i> 首页</a></li>
       {% block breadcrumb %}{% endblock %}
     </ol>
-      <section class="content-header" style="padding-top:0">
+    <section class="content-header" style="padding-top:0">
         <h3 style="margin-top:5px;font:10px">{% block content-header %}{% endblock %}</h3>
-      <small>Optional description</small>
-
+        <small><div id="notice"></div></small>
     </section>
 
     <section class="content">
     {% block content %}
       {% include "erp/layout/content.html" %}
     {% endblock %}
-  </section>
+    </section>
   </div>
 
     {% include "erp/layout/footer.html" %}
@@ -94,6 +89,11 @@ desired effect
 <script src="/static/erp/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/erp/dist/js/app.min.js"></script>
+<link rel="stylesheet" href="/static/plugins/toastr/toastr.css">
+<script src="/static/plugins/toastr/toastr.min.js"></script>
+<link rel="stylesheet" href="/static/plugins/jqtoast/jquery.toast.min.css">
+<script src="/static/plugins/jqtoast/jquery.toast.min.js"></script>
+<script src="/static/erp/main.js"></script>
 {% block scripts %}{% endblock %}
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

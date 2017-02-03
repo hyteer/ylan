@@ -4,18 +4,40 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">编辑用户</h4>
+                <h4 class="modal-title" id="myModalLabel">添加用户</h4>
             </div>
             <div class="modal-body">输入用户信息</div>
-            <div>
-              <a href="#">Get Name</a>|<a href="#">Secret</a>
-                <p>Your account doesn't have access to this page. To proceed,
-                please login with an account that has access.</p>
-                <p>Please login to see this page.</p>
+            <div class="container">
 
-                <form action="#">
+                <form action="/erp/customer_add/" method="post">
+
                   {% csrf_token %}
-                  {{ form.as_p }}
+                  {{ form.non_field_errors }}
+                  <div class="fieldWrapper">
+                      {{ form.useracc.errors }}
+                      <label for="{{ form.useracc.id_for_label }}">账号:</label>
+                      {{ form.useracc }}
+                  </div>
+                  <div class="fieldWrapper">
+                      {{ form.password.errors }}
+                      <label for="{{ form.password.id_for_label }}">密码:</label>
+                      {{ form.password }}
+                  </div>
+                  <div class="fieldWrapper">
+                      {{ form.password2.errors }}
+                      <label for="{{ form.password2.id_for_label }}">确认密码:</label>
+                      {{ form.password2 }}
+                  </div>
+                  <div class="fieldWrapper">
+                      {{ form.name.errors }}
+                      <label for="{{ form.name.id_for_label }}">姓名:</label>
+                      {{ form.name }}
+                  </div>
+                  <div class="fieldWrapper">
+                      {{ form.phone.errors }}
+                      <label for="{{ form.phone.id_for_label }}">电话:</label>
+                      {{ form.phone }}
+                  </div>
                   <input type="submit" value="Submit" />
                 </form>
 

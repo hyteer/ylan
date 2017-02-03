@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>BootStrap3.3.2测试</title>
+<link href="../vendor/bootstrap336/css/bootstrap.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="../vendor/jquery-1.11.3.min.js"></script>
+<script src="../vendor/bootstrap336/js/bootstrap.min.js"></script>
+<style>
+.col-center-block {
+    float: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="row">
+   <div class="center-block" style="width:200px;background-color:#ccc;">
+      这是 center-block 实例
+   </div>
+</div>
+<div id="dynotice"></div>
+  <div id="notice" class="hide fade alert alert-success alert-dismissable center-block" style="width:50%;padding:5px 30px 5px 10px">
+      <button type="button" class="close" data-dismiss="alert"
+              aria-hidden="true">
+          &times;
+      </button>
+      成功！很好地完成了提交。
+  </div>
+
+  <div class="alert alert-info alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert"
+              aria-hidden="true">
+          &times;
+      </button>
+      信息！请注意这个信息。
+  </div>
+  <div class="alert alert-warning alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert"
+              aria-hidden="true">
+          &times;
+      </button>
+      警告！请不要提交。
+  </div>
+  <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert"
+              aria-hidden="true">
+          &times;
+      </button>
+      错误！请进行一些更改。
+  </div>
+
+<button id="testbt" type="button" class="btn btn-block btn-primary">Test</button>
+
+  <div class="row myCenter">
+    <div class="col-xs-6 col-md-4 col-center-block">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">请登录</h2>
+        <label for="username" class="sr-only">用户名</label>
+        <input type="text" id="username" class="form-control" placeholder="用户名" required autofocus>
+        <label for="inputPassword" class="sr-only">密码</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me">
+            记住我 </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+$(document).ready(function(){
+  var el = '<div id="notice" class="alert alert-success alert-dismissable center-block" style="width:50%;padding:5px 30px 5px 10px">\
+      <button type="button" class="close" data-dismiss="alert"\
+              aria-hidden="true">\
+          &times;\
+      </button>\
+      成功！很好地完成了提交。\
+  </div>'
+
+  $("#testbt").click(function(){
+    $("#dynotice").html(el);
+    //$("#notice").removeClass("hide fade");
+    //alert("test...");
+  });
+
+});
+</script>
+
+
+</html>

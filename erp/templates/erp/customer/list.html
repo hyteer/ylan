@@ -1,3 +1,7 @@
+<style>
+.row tr button{padding:3px 5px;width:50px;height:60%;font-size:12px}
+#userlist .button-list{padding:0 8px}
+</style>
 <div class="row" style="margin-top:8px">
         <div class="col-xs-12">
           <div class="box">
@@ -40,11 +44,14 @@
                   {% endif %}
                   <td>
                     <div class="row pull-right" style="margin:0">
-                    <div class="col-lg-4 col-md-4">
-                    <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editUser" style="width:50px;height:60%;font-size:12px">编辑</button>
+                    <div class="button-list col-lg-4 col-md-4">
+                    <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editUser">编辑</button>
                     </div>
-                    <div class="col-lg-4 col-md-4">
-                    <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#editUser" style="width:50px;height:60%;font-size:12px">删除</button>
+                    <div class="button-list col-lg-4 col-md-4">
+                    <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#freezeUser">冻结</button>
+                    </div>
+                    <div class="button-list col-lg-4 col-md-4">
+                    <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#delUser">删除</button>
                   </div>
 
                 </div>

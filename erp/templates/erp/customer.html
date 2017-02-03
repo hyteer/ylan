@@ -1,4 +1,4 @@
-{% extends 'erp/base.html' %}
+{% extends 'erp/base/main.html' %}
 {% block title %}客户管理{% endblock %}
 
 
@@ -15,48 +15,85 @@
   <div class="col-lg-1 col-md-3">
     <button id="testEvent" type="button" class="btn btn-block btn-primary">Test</button>
   </div>
+  <div class="col-lg-1 col-md-3">
+    <button id="testbt" type="button" class="btn btn-block btn-primary">Notice</button>
+  </div>
 </div>
   <!-- Customer List -->
   {% include "erp/customer/list.html" %}
   {% include "erp/customer/add.html" %}
+  {% include "erp/customer/edit.html" %}
+  {% include "erp/customer/del.html" %}
+  {% include "erp/customer/freeze.html" %}
   <!-- 模态框（Modal） -->
   {% include "erp/customer/edit.html" %}
 
 {% block scripts %}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+// *******************删除确认********************
 $(document).ready(function(){
-  $("#testEvent2").click(function(){
+  $("#delUser button.confirm").click(function(){
+    $('#delUser').modal('hide');
+    axios.post('/erp/customer_del/', {
+      firstName: 'Fred',
+      lastName: 'Flintstone'
+    },axios_config)
+    .then(function (response) {
+      notice('ok',JSON.stringify(response.data));
+      console.log(response);
+    });
+    //notice('ok','已删除');
+  });
+});
+
+
+//* **************Test: http ajax请求*****************
+$(document).ready(function(){
+  $("#testEvent").click(function(){
     //$(this).hide();
+    //var csrftoken = getCookie('csrftoken');
     axios.get('/erp/userinfo', {
     firstName: 'Fred',
     lastName: 'Flintstone'
     })
   .then(function (response) {
+    toastr.success(response.data);
     console.log(response);
     })
   });
 });
+// *******************动态显示alert********************
+$(document).ready(function(){
+  // Test: toast消息
+  $("#testbt").click(function(){
+    notice('ok','Test message...');
+  });
+});
+// ***************************************************
+/*
 $(document).ready(function(){
   $('#addUser').on('show.bs.modal', function () {
     alert("Hi!!!");
   });
 });
-
+*/
+// Test
 $(function() {
   $("#myDiv div").click(function(){ //如何设置点击哪一个div就执行哪个
    //代码
   });
 });
 
-
+// Test:用户列表点击事件
+/*
 $("#userlist tr td").each(function (i) {
   $(this).click(function(){
     console.log("索引："+$(this).index()+"\nUser:"+$(this).parents("tr").attr('name'));
     alert("内容："+$(this).parents("tr").html());
    });
 });
-
+*/
 
 </script>
 
