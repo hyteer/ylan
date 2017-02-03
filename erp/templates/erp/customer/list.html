@@ -31,7 +31,7 @@
                   <th>操作</th>
                 </tr>
                 {% for customer in customers %}
-		            <tr name="{{ customer.user.username }}">
+		            <tr name="{{ customer.user.username }}" pk="{{ customer.user.id }}">
                   <td>{{ customer.name }}</td>
                   <td>{{ customer.user.username }}</td>
                   <td>{{ customer.phone }}</td>

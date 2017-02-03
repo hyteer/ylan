@@ -1,6 +1,57 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django import forms
+from django.forms import ModelForm
+from models import Customer,Role
+from django.contrib.auth.models import User
+
+
+class CustForm(ModelForm):
+
+    class Meta:
+        model = Customer
+        fields = ['id','user','name', 'phone', 'email','country']
+    def clean(self):
+        cleaned_data=super(CustForm,self).clean()
+        username=cleaned_data.get('username')
+        name=cleaned_data.get('name')
+        phone = cleaned_data.get('phone')
+        email = cleaned_data.get('email')
+
+        if not user:
+            self._errors['user'] = self.error_class([u"请输入用户名!"])
+        if not name:
+            self._errors['name'] = self.error_class([u"请输入姓名!"])
+        if not phone:
+            self._errors['phone'] = self.error_class([u"请输入电话!"])
+        return cleaned_data
+
+
+class UserForm(ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['id','username', 'groups', 'password','email']
+    def clean(self):
+        cleaned_data=super(UserForm,self).clean()
+        username=cleaned_data.get('username')
+        password=cleaned_data.get('password')
+        phone = cleaned_data.get('phone')
+        email = cleaned_data.get('email')
+
+        if not username:
+            self._errors['user'] = self.error_class([u"请输入用户名!"])
+        if not password:
+            self._errors['name'] = self.error_class([u"请输入姓名!"])
+        if not phone:
+            self._errors['phone'] = self.error_class([u"请输入电话!"])
+        return cleaned_data
+
+
+class RoleForm(ModelForm):
+    class Meta:
+        model = Role
+        fields = ['role_type', 'name']
 
 class NameForm(forms.Form):
     your_name = forms.CharField(label='Your name', max_length=100)

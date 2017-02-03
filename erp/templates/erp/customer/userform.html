@@ -1,0 +1,27 @@
+
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" class="myModalLabel">用户信息</h4>
+            </div>
+            <div class="modal-body">输入用户信息</div>
+            <div class="container">
+
+                <form action="/erp/userinfo/" method="post">
+                  {% csrf_token %}
+                  <table>
+                  {{form.as_table}}
+                  </table>
+                  <input type="submit" value="Submit" />
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>

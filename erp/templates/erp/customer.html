@@ -31,18 +31,22 @@
 {% block scripts %}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-// *******************删除确认********************
+// *******************用户管理********************
+
+
 $(document).ready(function(){
+  $('#delUser').on('show.bs.modal', function () {
+    $('#delUser b').text(USER_DEL);
+  });
+});
+
+$(document).ready(function(){
+  // 删除用户
+  user_event('del');
   $("#delUser button.confirm").click(function(){
+    console.log("User to be Del:"+USER_DEL);
     $('#delUser').modal('hide');
-    axios.post('/erp/customer_del/', {
-      firstName: 'Fred',
-      lastName: 'Flintstone'
-    },axios_config)
-    .then(function (response) {
-      notice('ok',JSON.stringify(response.data));
-      console.log(response);
-    });
+    user_ajax('del',USER_DEL)
     //notice('ok','已删除');
   });
 });
@@ -51,8 +55,6 @@ $(document).ready(function(){
 //* **************Test: http ajax请求*****************
 $(document).ready(function(){
   $("#testEvent").click(function(){
-    //$(this).hide();
-    //var csrftoken = getCookie('csrftoken');
     axios.get('/erp/userinfo', {
     firstName: 'Fred',
     lastName: 'Flintstone'
@@ -70,7 +72,8 @@ $(document).ready(function(){
     notice('ok','Test message...');
   });
 });
-// ***************************************************
+// ********************用户管理************************
+
 /*
 $(document).ready(function(){
   $('#addUser').on('show.bs.modal', function () {

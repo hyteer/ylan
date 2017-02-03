@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import json
-from django.shortcuts import render,HttpResponseRedirect
+from django.shortcuts import render,HttpResponseRedirect, get_object_or_404, \
+render_to_response
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .forms import NameForm, ContactForm, CustomerForm,AddCustomerForm
+from .forms import NameForm, ContactForm, CustomerForm,AddCustomerForm,UserForm
 from django.contrib.auth.models import User
 from .models import Customer
 
@@ -41,7 +42,7 @@ def test(req):
     #return render(req, 'erp/test.html',{'nameform':nameform,'form':contactform})
     return render(req, 'erp/bootsdemo.html',{'form':nameform})
 
-#### 用户登录 ####
+######################用户登录 ##################
 def user_login(req):
     if req.method == 'POST':
 
@@ -85,9 +86,9 @@ def second_auth(req):
             return HttpResponse('{"code":4003,"msg":"auth fails"}')
 
 
-
+######################### 用户管理 #######################
 @csrf_exempt
-def userinfo(req):
+def temptest(req):
     if req.method == 'POST':
         return HttpResponse('{"code":1,"msg":"ok"}')
     else:
@@ -122,13 +123,83 @@ def customer_add(req):
     else:
         return HttpResponse("非法请求!")
 
+# Model Form View
+@csrf_exempt
+def userinfo(req):
+
+    #username = req.GET['username']
+    if req.method=="POST":
+        import pdb; pdb.set_trace()
+        custer = get_object_or_404(Customer,)
+        form=UserForm(req.POST,instance=custer)
+        import pdb;pdb.set_trace()
+        if form.is_valid():
+            user=form.save()
+            #blog.save()
+            return HttpResponseRedirect(reverse("customer"))
+    else:
+        id = req.GET['id']
+        #user=get_object_or_404(User,username=username)
+        user = get_object_or_404(User,pk=id)
+        return render_to_response('erp/customer/userform.html', {'form': UserForm(instance=user)})
+
+
+@csrf_exempt
+def custinfo(req):
+
+    #username = req.GET['username']
+
+
+    if req.method=="POST":
+        import pdb; pdb.set_trace()
+        custer = get_object_or_404(Customer,)
+        form=UserForm(req.POST,instance=custer)
+        import pdb;pdb.set_trace()
+        if form.is_valid():
+            user=form.save()
+            #blog.save()
+            return HttpResponseRedirect(reverse("customer"))
+    else:
+        cusid = req.GET['id']
+        #user=get_object_or_404(User,username=username)
+        custer = get_object_or_404(Customer,pk=cusid)
+        return render_to_response('erp/customer/userform.html', {'form': UserForm(instance=custer)})
+
+
+
+#### 编辑用户 ####
+@login_required(redirect_field_name='/erp/login')
+def customer_add(req):
+    if req.method == 'POST':
+        form = CustomerForm(req.POST)
+        #import pdb; pdb.set_trace()
+        if form.is_valid():
+            print "Post Data:",form.cleaned_data
+            useracc = form.cleaned_data['useracc']
+            password = form.cleaned_data['password']
+            name = form.cleaned_data['name']
+            phone = form.cleaned_data['phone']
+            user = User.objects.create_user(username=useracc, password=password)
+            customer = Customer(user=user,name=name,phone=phone,role_id=1)
+            customer.save()
+            # process the data in form.cleaned_data as required
+            data = {"code":"1","msg":"success!"}
+            data = json.dumps(data)
+            return HttpResponse(data)
+    else:
+        return HttpResponse("非法请求!")
+
 #### 删除用户 ####
 @login_required(redirect_field_name='/erp/login')
 def customer_del(req):
     if req.method == 'POST':
         #import pudb; pudb.set_trace()
-        print "Data:",req.POST
-        return HttpResponse("已收到请求")
+        print "Data:",req.body
+        data = json.loads(req.body)
+        print "name:",data['username']
+        #user = User.objects.filter(username=data['username']).first()
+        #user.delete()
+        return HttpResponse("已收到请求,该用户已删除")
 
     else:
         return HttpResponse("非法请求!")
