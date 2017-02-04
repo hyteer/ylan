@@ -190,10 +190,20 @@ def consign(req):
 ######################### Test&Debu #############################
 # Model Form View
 @csrf_exempt
-def ajax_test(req):
+def ajax_test2(req):
     if req.method=="POST":
         print "Data:",req.body
         return HttpResponse("已收到.\nData:"+req.body)
+            #return HttpResponseRedirect(reverse("customer"))
+    else:
+        return HttpResponse("非法请求!")
+
+@csrf_exempt
+def ajax_test(req):
+    if req.method=="POST":
+
+        print "Data received:",req.body
+        return HttpResponse("已收到.\nData:")
             #return HttpResponseRedirect(reverse("customer"))
     else:
         return HttpResponse("非法请求!")

@@ -81,8 +81,7 @@ var USER_CONFIG = {
     del:{url:"/customer_del/",msg:"已删除！"}
 };
 
-function user_event(type){
-
+function user_event(){
   $("#userlist tr button").each(function (i) {
     $(this).click(function(){
       console.log("Origin User Value:"+USER);
@@ -111,6 +110,65 @@ function user_ajax(type,user){
     USER = '';
   });
 };
+
+// Ajax x-www-form
+function form_ajax(url){
+  var data = new FormData($('#addUser form')[0]);
+	console.log("Data:")
+  console.log(data);
+	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
+		  console.log(response);
+	  });
+	};
+
+
+  axios.post(authServerUrl + token_access_path,
+      querystring.stringify({
+              username: 'abcd', //gave the values directly for testing
+              password: '1235!',
+              client_id: 'user-client'
+      }), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function(response) {
+          console.log(response);
+      });
+
+
+$('#form').submit(function(e){
+        e.preventDefault();
+
+        //fill FormData with form fields
+
+        var data = new FormData($(this));
+        data.append("photo", $("#id_photo")[0].files[0]);
+        data.append("description",$("#id_description").val());
+
+        $.ajax({
+            url:'/',
+            type: 'POST',
+            data: data,
+            cache:false,
+            processData: false,
+            contentType: false,
+            //part related to Django crsf token
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                 // Send the token to same-origin, relative URLs only.
+                 // Send the token only if the method warrants CSRF protection
+                 // Using the CSRFToken value acquired earlier
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            },
+            success: function(data){
+                var parseData = $.parseJSON(data);
+                console.log(parseData.message);
+            }
+        });
+
+    });
+
 
 function user_remove(type){
 

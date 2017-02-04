@@ -31,15 +31,17 @@ button.topbutton{padding:3px 5px;}
   {% include "erp/customer/edit.html" %}
 
 {% block scripts %}
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
 // *******************用户管理********************
 
 
 
 $(document).ready(function(){
+
+  user_event();
+
   // 删除用户
-  user_event('del');
   $('#delUser').on('show.bs.modal', function () {
     $('#delUser b').text(USER);
   });
@@ -50,6 +52,17 @@ $(document).ready(function(){
     user_ajax('del',USER);
     $("#userlist [name="+USER+"]").remove();
   });
+
+  // 添加用户(AJAX)
+  $("#addUser button.confirm").click(function(){
+    console.log("User to be Add:"+USER);
+    $('#addUser').modal('hide');
+    form_ajax('/erp/ajax_test/');
+
+  });
+
+
+
 });
 
 // **** Edit
