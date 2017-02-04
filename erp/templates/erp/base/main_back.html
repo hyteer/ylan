@@ -7,14 +7,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  {# Load the tag library #}
-  {% load bootstrap3 %}
-
-  {# Load CSS and JavaScript #}
-  {% bootstrap_css %}
-  {# Display django.contrib.messages as Bootstrap alerts #}
-  {% bootstrap_messages %}
-
+  <link rel="stylesheet" href="/static/erp/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -93,7 +86,7 @@ desired effect
 <!-- jQuery 2.2.3 -->
 <script src="/static/erp/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-  {% bootstrap_javascript %}
+<script src="/static/erp/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/erp/dist/js/app.min.js"></script>
 <link rel="stylesheet" href="/static/plugins/toastr/toastr.css">
@@ -101,9 +94,6 @@ desired effect
 <link rel="stylesheet" href="/static/plugins/jqtoast/jquery.toast.min.css">
 <script src="/static/plugins/jqtoast/jquery.toast.min.js"></script>
 <script src="/static/erp/main.js"></script>
-<script src="/static/plugins/jquery.serializejson.min.js"></script>
-
-
 {% block scripts %}{% endblock %}
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

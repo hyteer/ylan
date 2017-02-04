@@ -32,6 +32,11 @@ class Customer(models.Model):
             return '正常'
     display_name.short_description = '姓名'
     role_name.short_description = '角色'
+    def get_customer_info(self):
+        data = {'user':self.user.username,'user_id':self.user.pk,'name':self.name,\
+            'phone':self.phone,'email':self.email
+        }
+        return data
 
 class Role(models.Model):
     role_type = models.IntegerField()

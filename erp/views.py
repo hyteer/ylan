@@ -8,7 +8,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .forms import NameForm, ContactForm, CustomerForm,AddCustomerForm,UserForm
+from .forms import NameForm, ContactForm, CustomerForm,AddCustomerForm,UserForm, \
+CustForm
 from django.contrib.auth.models import User
 from .models import Customer
 
@@ -100,7 +101,7 @@ def customer(req):
     cutomers = Customer.objects.all()
     form = CustomerForm()
     return render(req, 'erp/customer.html',{'customers':cutomers,'form':form})
-
+########################## User Management ########################
 #### 添加用户 ####
 @login_required(redirect_field_name='/erp/login')
 def customer_add(req):
@@ -123,33 +124,9 @@ def customer_add(req):
     else:
         return HttpResponse("非法请求!")
 
-# Model Form View
 @csrf_exempt
 def userinfo(req):
-
     #username = req.GET['username']
-    if req.method=="POST":
-        import pdb; pdb.set_trace()
-        custer = get_object_or_404(Customer,)
-        form=UserForm(req.POST,instance=custer)
-        import pdb;pdb.set_trace()
-        if form.is_valid():
-            user=form.save()
-            #blog.save()
-            return HttpResponseRedirect(reverse("customer"))
-    else:
-        id = req.GET['id']
-        #user=get_object_or_404(User,username=username)
-        user = get_object_or_404(User,pk=id)
-        return render_to_response('erp/customer/userform.html', {'form': UserForm(instance=user)})
-
-
-@csrf_exempt
-def custinfo(req):
-
-    #username = req.GET['username']
-
-
     if req.method=="POST":
         import pdb; pdb.set_trace()
         custer = get_object_or_404(Customer,)
@@ -163,16 +140,16 @@ def custinfo(req):
         cusid = req.GET['id']
         #user=get_object_or_404(User,username=username)
         custer = get_object_or_404(Customer,pk=cusid)
-        return render_to_response('erp/customer/userform.html', {'form': UserForm(instance=custer)})
-
-
+        return render_to_response('erp/customer/boot.html', {'form': CustForm(instance=custer)})
 
 #### 编辑用户 ####
 @login_required(redirect_field_name='/erp/login')
-def customer_add(req):
+def customer_edit(req):
     if req.method == 'POST':
-        form = CustomerForm(req.POST)
+        print "Data:",req.body
+        return HttpResponse("已收到.\nData:"+req.body)
         #import pdb; pdb.set_trace()
+        '''
         if form.is_valid():
             print "Post Data:",form.cleaned_data
             useracc = form.cleaned_data['useracc']
@@ -186,6 +163,7 @@ def customer_add(req):
             data = {"code":"1","msg":"success!"}
             data = json.dumps(data)
             return HttpResponse(data)
+        '''
     else:
         return HttpResponse("非法请求!")
 
@@ -197,9 +175,9 @@ def customer_del(req):
         print "Data:",req.body
         data = json.loads(req.body)
         print "name:",data['username']
-        #user = User.objects.filter(username=data['username']).first()
-        #user.delete()
-        return HttpResponse("已收到请求,该用户已删除")
+        user = User.objects.filter(username=data['username']).first()
+        user.delete()
+        return HttpResponse('{"code":0,"msg":"删除成功！"}')
 
     else:
         return HttpResponse("非法请求!")
@@ -207,3 +185,15 @@ def customer_del(req):
 @login_required(redirect_field_name='/erp/login')
 def consign(req):
     return render(req, 'erp/consign.html')
+
+
+######################### Test&Debu #############################
+# Model Form View
+@csrf_exempt
+def ajax_test(req):
+    if req.method=="POST":
+        print "Data:",req.body
+        return HttpResponse("已收到.\nData:"+req.body)
+            #return HttpResponseRedirect(reverse("customer"))
+    else:
+        return HttpResponse("非法请求!")

@@ -10,6 +10,7 @@ app_name = 'erp'  # set this app's namespace
 urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^test/$', views.test, name='test'),
+    url(r'^ajax_test/$', views.ajax_test, name='ajax_test'),
     url(r'^login2/$', auth_views.login),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
@@ -18,7 +19,7 @@ urlpatterns = [
     url(r'^customer/$', views.customer, name='customer'),
     url(r'^customer_add/$', views.customer_add, name='customer_add'),
     url(r'^customer_del/$', views.customer_del, name='customer_del'),
-    url(r'^customer_edit/$', views.customer, name='customer'),
+    url(r'^customer_edit/$', views.customer_edit, name='customer_edit'),
     url(r'^consign/$', views.consign, name='consign'),
     url(r'^userinfo/$', views.userinfo, name='userinfo'),
 

@@ -69,28 +69,26 @@ var AXIOS_CONFIG = {
 }
 
 // ******************** 用户管理 *****************
-var USER = ''
-var USER_DEL = ''
-var USER_ADD = ''
+var USER = '';
+var USER_FLAG = 0;
+var USER_DEL = '';
+var USER_ADD = '';
+var USER_EDIT = '';
+var USER_URL = '/erp';
+var USER_CONFIG = {
+    add:{url:"/customer_add/",msg:"添加成功！"},
+    edit:{url:"/customer_edit/",msg:"已更新资料！"},
+    del:{url:"/customer_del/",msg:"已删除！"}
+};
 
 function user_event(type){
 
   $("#userlist tr button").each(function (i) {
     $(this).click(function(){
-      console.log("Origin User Value:"+USER_DEL);
+      console.log("Origin User Value:"+USER);
       USER=$(this).parents("tr").attr('name')
       console.log("索引："+$(this).index()+"\nUser:"+USER);
       //alert("内容："+$(this).parents("tr").html());
-      switch(type)
-      {
-          case 'add':
-              USER_ADD = USER;
-              break;
-          case 'del':
-              USER_DEL = USER;
-              console.log("user.."+USER_DEL);
-              break;
-      }
      });
   });
 };
@@ -98,23 +96,30 @@ function user_event(type){
 
 function user_ajax(type,user){
   console.log("user:"+user);
-  var baseurl = "/erp";
-  switch(type)
-  {
-      case 'add':
-          url=baseurl+"/customer_add/";
-          msg='添加成功！';
-          break;
-      case 'del':
-          url=baseurl+"/customer_del/";
-          msg='删除成功！';
-          break;
-  }
-  axios.post(url, {
+  var URL = USER_URL + USER_CONFIG[type].url;
+  axios.post(URL, {
     username: user
   },AXIOS_CONFIG)
   .then(function (response) {
-    notice(msg,JSON.stringify(response.data));
-    console.log(response);
+    if(response.data.code==0){
+      USER_FLAG = 1;
+      notice('ok',JSON.stringify(response.data));
+      console.log(response);
+    }else{
+      notice("操作失败.");
+    }
+    USER = '';
+  });
+};
+
+function user_remove(type){
+
+  $("#userlist tr button").each(function (i) {
+    $(this).click(function(){
+      console.log("Origin User Value:"+USER);
+      USER=$(this).parents("tr").attr('name')
+      console.log("索引："+$(this).index()+"\nUser:"+USER);
+      //alert("内容："+$(this).parents("tr").html());
+     });
   });
 };

@@ -1,6 +1,8 @@
 {% extends 'erp/base/main.html' %}
 {% block title %}客户管理{% endblock %}
-
+<style>
+button.topbutton{padding:3px 5px;}
+</style>
 
 {% block breadcrumb %}
   <li class="active">客户管理</li>
@@ -10,13 +12,13 @@
 
 <div class="row">
   <div class="col-lg-1 col-md-3">
-    <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#addUser">添加</button>
+    <button type="button" class="topbutton btn btn-block btn-primary" data-toggle="modal" data-target="#addUser">添加</button>
   </div>
   <div class="col-lg-1 col-md-3">
-    <button id="testEvent" type="button" class="btn btn-block btn-primary">Test</button>
+    <button id="testEvent" type="button" class="topbutton btn btn-block btn-primary">Test</button>
   </div>
   <div class="col-lg-1 col-md-3">
-    <button id="testbt" type="button" class="btn btn-block btn-primary">Notice</button>
+    <button id="testbt" type="button" class="topbutton btn btn-block btn-primary">Notice</button>
   </div>
 </div>
   <!-- Customer List -->
@@ -34,31 +36,47 @@
 // *******************用户管理********************
 
 
-$(document).ready(function(){
-  $('#delUser').on('show.bs.modal', function () {
-    $('#delUser b').text(USER_DEL);
-  });
-});
 
 $(document).ready(function(){
   // 删除用户
   user_event('del');
+  $('#delUser').on('show.bs.modal', function () {
+    $('#delUser b').text(USER);
+  });
+
   $("#delUser button.confirm").click(function(){
-    console.log("User to be Del:"+USER_DEL);
+    console.log("User to be Del:"+USER);
     $('#delUser').modal('hide');
-    user_ajax('del',USER_DEL)
-    //notice('ok','已删除');
+    user_ajax('del',USER);
+    $("#userlist [name="+USER+"]").remove();
   });
 });
+
+// **** Edit
+/*
+$(document).ready(function(){
+  user_event('edit');
+  $("#editUser button.confirm").click(function(){
+    console.log("User to be Update:"+USER_EDIT);
+    $('#editUser').modal('hide');
+    var obj = $('#editUser  form').serializeJSON();
+    var jsonString = JSON.stringify(obj);
+    console.log("Data:"+jsonString);
+    var resmsg = user_ajax('edit',USER_EDIT);
+    //notice('ok','已删除');
+    notice('info',resmsg);
+  });
+});
+*/
 
 
 //* **************Test: http ajax请求*****************
 $(document).ready(function(){
   $("#testEvent").click(function(){
-    axios.get('/erp/userinfo', {
+    axios.post('/erp/ajax_test/', {
     firstName: 'Fred',
     lastName: 'Flintstone'
-    })
+    },AXIOS_CONFIG)
   .then(function (response) {
     toastr.success(response.data);
     console.log(response);
@@ -97,6 +115,8 @@ $("#userlist tr td").each(function (i) {
    });
 });
 */
+
+
 
 </script>
 
