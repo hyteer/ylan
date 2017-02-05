@@ -1,7 +1,6 @@
 **/venv/**
 **/venvs/**
 **/node_modules/**
-**/build/**
 **/.tmp/**
 **/*_bak/**
 *_bak
