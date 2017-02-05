@@ -1,0 +1,55 @@
+<template>
+<!-- Top Nav bar -->
+<nav id="topbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container center-block">
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li><a class="navbar-brand" href="#">YTest</a></li>
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Test <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                    <li><a href="#">admin</a></li>
+                    <li><a href="#">ModTest</a></li>
+                    <li><a href="#">ChangeAvatar</a></li>
+                    <li><a href="#">FileUpload</a></li>
+                    <li><a href="#">Test3</a></li>
+                    <li><a href="#">Moderate Comments</a></li>
+            </ul>
+            </li>
+            <li><a href="/demo">Demo</a></li>
+            <li><a href="/erp">WMS</a></li>
+            <li><a href="#">Other</a></li>
+        </ul>
+
+        <ul id="nav_right" class="nav navbar-nav navbar-right">
+
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account
+                    <img src="/static/me.ico" with="20" height="20">
+                    <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">MyInfo</a></li>
+                    <li><a href="#">Change Password</a></li>
+                    <li><a href="#">Change Email</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Logout</a></li>
+
+        </ul>
+    </div>
+    </div>
+</nav>
+</template>
+
+<script>
+export default {
+  name: 'navbar',
+  data () {
+    return {
+      readme: 'Top Navbar'
+    }
+  }
+}
+</script>
