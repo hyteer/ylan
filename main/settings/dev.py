@@ -131,6 +131,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "frontend/wms/dist"),
+    os.path.join(BASE_DIR, "frontend/wms/static"),
     os.path.join(BASE_DIR, "frontend/tms/dist"),
     'static',
     os.path.join(BASE_DIR, 'components/bower_components'),
