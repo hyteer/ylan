@@ -1,18 +1,13 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <p>
+    <header>
       <!-- use router-link component for navigation. -->
       <!-- specify the link by passing the `to` prop. -->
       <!-- <router-link> will be rendered as an `<a>` tag by default -->
-      <router-link to="/">Default</router-link>
-      <router-link to="/home">Home</router-link>
-      <router-link to="/element">Element</router-link>
-      <router-link to="/user/YT">User</router-link>
-      <router-link to="/user/YT/profile">Profile</router-link>
-      <router-link to="/user/YT/posts">Posts</router-link>
-    </p>
-    <router-view></router-view>
+      <router-view class="view navbar" name="navbar"></router-view>
+    </header>
+      <router-view></router-view>
   </div>
 </template>
 
