@@ -1,15 +1,33 @@
 {% load bootstrap3 %}
 <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" style="padding:10px 40px">
+        <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" class="myModalLabel">添加用户</h4>
             </div>
-            <div class="modal-body">输入用户信息</div>
-            <form action="/erp/customer_add/" method="post" class="form">
+            {{ form.non_field_errors }}
+            <form role="form" action="/erp/customer_add/" method="post" class="form form-horizontal">
               {% csrf_token %}
-              {% bootstrap_form form %}
+              <div class="box-body">
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.errors }}
+
+                    <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">
+                      {% if field.field.required %}<span style="color:red"><b>* </b></span>{% endif %}
+                      {{ field.label }}</label>
+                    <div class="col-sm-10">
+                     {{ field }}
+                    </div>
+                    {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                </div>
+                {% endif %}
+
+              </div>
+            {% endfor %}
+
               {% buttons %}
                 <button type="submit" class="btn btn-primary">
                   {% bootstrap_icon "star" %} Submit

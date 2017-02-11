@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^test/$', views.test, name='test'),
     url(r'^ajax_test/$', views.ajax_test, name='ajax_test'),
+    url(r'^create_post/$', views.create_post, name='create_post'),
     url(r'^login2/$', auth_views.login),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),

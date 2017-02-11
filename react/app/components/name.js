@@ -1,7 +1,15 @@
 import React from "react";
+import { Button } from 'antd'
+
+
 class Welcome extends React.Component {
 	render() {
-	    return <h3>Hello, {this.props.name}</h3>;
+	    return (
+				<div>
+					<h3>Hello2, {this.props.name}</h3>
+					<Button type="primary">Button</Button>
+				</div>
+			)
 	  }
 	}
 

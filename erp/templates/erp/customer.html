@@ -2,6 +2,7 @@
 {% block title %}客户管理{% endblock %}
 <style>
 button.topbutton{padding:3px 5px;}
+
 </style>
 
 {% block breadcrumb %}
@@ -55,9 +56,11 @@ $(document).ready(function(){
 
   // 添加用户(AJAX)
   $("#addUser button.confirm").click(function(){
-    console.log("User to be Add:"+USER);
+    console.log("User to be Add:"+$("#id_username").val());
     $('#addUser').modal('hide');
-    form_ajax('/erp/ajax_test/');
+    //form_ajax('/erp/ajax_test/');
+    customer_add_ajax();
+    //ajax_test();
 
   });
 

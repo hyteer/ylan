@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd'
+import { Button,DatePicker } from 'antd'
 
 export default class AntdDemo extends React.Component {
     render() {
@@ -7,6 +7,7 @@ export default class AntdDemo extends React.Component {
             <header>
                 <h3>AntdDemo</h3>
                 <Button type="primary">Button</Button>
+                <DatePicker />
             </header>
         );
     }

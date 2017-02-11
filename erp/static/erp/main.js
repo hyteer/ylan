@@ -9,13 +9,13 @@ toastr.options = {
         onclick: null,
         showDuration: "300",
         hideDuration: "1000",
-        timeOut: "2000",
+        timeOut: "5000",
         extendedTimeOut: "1000",
         showEasing: "swing",
         hideEasing: "linear",
         showMethod: "fadeIn",
         hideMethod: "fadeOut"
-    };
+  };
 
 // JQuery Toast wraper function
 // 用于消息提示
@@ -61,6 +61,8 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+
 //var csrftoken = getCookie('csrftoken');
 // **** axios config
 var AXIOS_CONFIG = {
@@ -122,21 +124,33 @@ function form_ajax(url){
 	};
 
 
-  axios.post(authServerUrl + token_access_path,
-      querystring.stringify({
-              username: 'abcd', //gave the values directly for testing
-              password: '1235!',
-              client_id: 'user-client'
-      }), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(function(response) {
-          console.log(response);
-      });
+function customer_add_ajax(){
+  var data = new FormData($(this));
+  data.append("username", $("#id_username").val());
+  data.append("password",$("#id_password").val());
+  console.log("Data:"+data)
+  $.ajax({
+      url:'/erp/customer_add/',
+      type: 'POST',
+      data: data,
+      cache:false,
+      processData: false,
+      contentType: false,
+      //part related to Django crsf token
+      beforeSend: function(xhr, settings) {
+          var csrftoken = getCookie('csrftoken');
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      },
+
+      success: function(data){
+          var parseData = $.parseJSON(data);
+          console.log(parseData.message);
+      }
+    });
+}
 
 
-$('#form').submit(function(e){
+$('#form11').submit(function(e){
         e.preventDefault();
 
         //fill FormData with form fields
@@ -146,7 +160,7 @@ $('#form').submit(function(e){
         data.append("description",$("#id_description").val());
 
         $.ajax({
-            url:'/',
+            url:'/erp/customer_add/',
             type: 'POST',
             data: data,
             cache:false,
@@ -159,7 +173,7 @@ $('#form').submit(function(e){
                  // Send the token only if the method warrants CSRF protection
                  // Using the CSRFToken value acquired earlier
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
+                  }
             },
             success: function(data){
                 var parseData = $.parseJSON(data);
@@ -168,6 +182,38 @@ $('#form').submit(function(e){
         });
 
     });
+
+
+function form_ajax() {
+    var settings = {csrfmiddlewaretoken: '{{ csrf_token }}'}
+    console.log("Your are here...csrf_token: "+data.csrfmiddlewaretoken)
+
+    var name = $("#id_username").val();                 //获得form中用户输入的name 注意这里的id_name 与你html中的id一致
+    var password = $("#id_password").val();    //同上
+
+    $.ajax({
+        type:"POST",
+        data: {username:name, password:password},
+        url: "/erp/ajax_test/", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
+        cache: false,
+        dataType: "html",
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+             // Send the token to same-origin, relative URLs only.
+             // Send the token only if the method warrants CSRF protection
+             // Using the CSRFToken value acquired earlier
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        },
+        success: function(result, statues){
+            toastr(result);                                         //成功时弹出view传回来的结果
+        },
+        error: function(){
+            toastr("false...");
+        }
+    });
+};
+
 
 
 function user_remove(type){
@@ -181,3 +227,55 @@ function user_remove(type){
      });
   });
 };
+
+/******************* Test ********************/
+function ajax_test(){
+  axios.post('/erp/ajax_test/', {a: 1, b:2}, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  }).then(response => response.data)
+    .then(data => {
+      console.log(data);
+      notice('ok',JSON.stringify(data));
+    });
+}
+
+/**************** Test *************************/
+function create_post() {
+    console.log("create post is working!") // sanity check
+    console.log("Post_text:"+$('#id_post_text').val())
+    $.ajax({
+        url : "/erp/create_post/", // the endpoint
+        type : "POST", // http method
+        data : { the_post : $('#id_post_text').val() }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            $('#post-text').val(''); // remove the value from the input
+            console.log(json); // log the returned json to the console
+            notice('ok',JSON.stringify(json))
+            $("#talk").prepend("<li><strong>"+json.text+"</strong> - <em> "+json.author+"</em> - <span> "+json.created+"</span></li>");
+            console.log("success"); // another sanity check
+        },
+        beforeSend: function(xhr, settings) {
+            var csrftoken = getCookie('csrftoken');
+            console.log("Cookie:"+csrftoken)
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+$(document).ready(function(){
+  $('#post-form').on('submit', function(event){
+      console.log("Here...")
+      event.preventDefault();
+      console.log("form submitted!")  // sanity check
+      create_post();
+  });
+});

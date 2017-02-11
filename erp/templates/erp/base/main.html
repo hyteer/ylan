@@ -13,7 +13,7 @@
   {# Load CSS and JavaScript #}
   {% bootstrap_css %}
   {# Display django.contrib.messages as Bootstrap alerts #}
-  {% bootstrap_messages %}
+
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -27,6 +27,7 @@
   -->
   <link rel="stylesheet" href="/static/erp/dist/css/skins/skin-blue.min.css">
 
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -34,7 +35,6 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-
 <!--
 BODY TAG OPTIONS:
 =================
@@ -56,6 +56,7 @@ desired effect
 |---------------------------------------------------------|
 -->
 <body class="hold-transition skin-blue sidebar-mini">
+
 <div class="wrapper">
 
   {% block header %}
@@ -104,12 +105,38 @@ desired effect
 <script src="/static/erp/main.js"></script>
 <script src="/static/plugins/jquery.serializejson.min.js"></script>
 <script src="/static/plugins/qs.js"></script>
-
-
+<link rel="stylesheet" href="/static/erp/style.css">
+{% if messages %}
+    {% for message in messages %}
+    <script type="text/javascript">
+    toastr.options = {
+            closeButton: false,
+            debug: false,
+            //progressBar: true,
+            //positionClass: "toast-bottom-center",
+    		positionClass: "toast-top-center",
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            timeOut: "8000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+      };
+    //console.log("message:"+"{{message}}");
+    $(document).ready(function(){toastr.success("{{ message }}");});
+    </script>
+    {% endfor %}
+{% endif %}
 {% block scripts %}{% endblock %}
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
 </body>
+
+
+
 </html>
