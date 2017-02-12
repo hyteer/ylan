@@ -6,7 +6,6 @@ render_to_response
 from django.http import HttpResponse
 from django.contrib import messages
 #from django.contrib.messages import constants as messages
-from django.conf.urls import url, include
 from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -107,34 +106,42 @@ def temptest(req):
 @login_required(redirect_field_name='/erp/login')
 def customer(req):
     cutomers = Customer.objects.all()
-    #form = UserForm()
-    form = CustomerForm()
-    #form = CustForm()
-    return render(req, 'erp/customer.html',{'customers':cutomers,'form':form})
+    userform = UserForm(prefix='user')
+    #form = CustomerForm()
+    custform = CustForm(prefix='cust')
+    return render(req, 'erp/customer.html',{'customers':cutomers,'form':custform,'userform':userform})
 ########################## User Management ########################
 #### 添加用户 ####
 @login_required(redirect_field_name='/erp/login')
 def customer_add(req):
     if req.method == 'POST':
-        #import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
         #form = UserForm(req.POST)
         form = CustomerForm(req.POST)
 
         if form.is_valid():
 
             print "Post Data:",form.cleaned_data
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             name = form.cleaned_data['name']
             phone = form.cleaned_data['phone']
-            user = User.objects.create_user(username=username, password=password)
-            customer = Customer(user=user,name=name,phone=phone,role_id=1)
-            customer.save()
-            # process the data in form.cleaned_data as required
-            data = {"code":"1","msg":"success!"}
-            data = json.dumps(data)
-            return HttpResponse(data)
+            user = User.objects.filter(username = username).first()
+            #
+            if user:
+                print ("User exist...")
+                #import pdb;pdb.set_trace()
+                messages.add_message(req, messages.INFO, '用户名已存在!.')
+                return HttpResponse({"code":"4000","msg":"failed!"})
+            else:
+                user = User.objects.create_user(username=username, password=password)
+                customer = Customer(user=user,name=name,phone=phone,role_id=1)
+                customer.save()
+                # process the data in form.cleaned_data as required
+                data = {"code":"1","msg":"success!"}
+                data = json.dumps(data)
+                return HttpResponse(data)
         else:
             #import pdb; pdb.set_trace()
             errors = {'errors':form.errors['__all__']}

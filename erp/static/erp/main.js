@@ -128,7 +128,10 @@ function customer_add_ajax(){
   var data = new FormData($(this));
   data.append("username", $("#id_username").val());
   data.append("password",$("#id_password").val());
-  console.log("Data:"+data)
+  //data.append("confirm_password",$("#id_confirm_password").val());
+
+  console.log("data:"+data)
+
   $.ajax({
       url:'/erp/customer_add/',
       type: 'POST',
@@ -139,9 +142,9 @@ function customer_add_ajax(){
       //part related to Django crsf token
       beforeSend: function(xhr, settings) {
           var csrftoken = getCookie('csrftoken');
+          console.log("TOken:"+csrftoken)
           xhr.setRequestHeader("X-CSRFToken", csrftoken);
       },
-
       success: function(data){
           var parseData = $.parseJSON(data);
           console.log(parseData.message);
