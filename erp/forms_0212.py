@@ -13,14 +13,10 @@ class CustForm(ModelForm):
 
     class Meta:
         model = Customer
-        #fields = ['id','user','role','name', 'phone', 'email','country']
-        fields = ['role','name', 'phone', 'email','country']
-        exclude = ('user',)
-        '''
+        fields = ['id','user','role','name', 'phone', 'email','country']
         widgets = {
             'user': forms.TextInput(attrs={'required': True,'placeholder':'用户名'}),
         }
-
     def clean_username(self): # check if username dos not exist before
         try:
             User.objects.get(username=self.cleaned_data['user']) #get user from user model
@@ -42,42 +38,21 @@ class CustForm(ModelForm):
         if not phone:
             self._errors['phone'] = self.error_class([u"请输入电话!"])
         return cleaned_data
-        '''
 
 
-class UserForm(forms.ModelForm):
-    #password = forms.CharField(widget=forms.PasswordInput)
-    #password_confirm = forms.CharField(widget=forms.PasswordInput)
+class UserForm(forms.Form):
     style_class = {'class':'form-control'}
-    confirm_password = forms.CharField(required=True,label='确认密码',
-                      widget=forms.PasswordInput(attrs=style_class),
-                      min_length=6,
-                      max_length=10,
-                      error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
-
-    class Meta:
-
-        model = User
-        fields = ['username','password']
-        labels = {
-            "username": "用户名",
-            "password": "密码"
-        }
-        widgets = {
-            'username': forms.TextInput(attrs={'class':'form-control','required':True,'placeholder':'用户登录名,英文小写字符'}),
-            'password':forms.PasswordInput(attrs={'class':'form-control','required':True,'placeholder':'6位以上英文字符'},)
-        }
-        help_texts = {
-            "username": "用户登录名,英文小写字符",
-            'password': '最小6位英文字符'
-        }
-    def clean_username(self): # check if username dos not exist before
-        try:
-            User.objects.get(username=self.cleaned_data['username']) #get user from user model
-        except User.DoesNotExist :
-            return self.cleaned_data['username']
-        raise forms.ValidationError("this user exist already")
-
+    username = forms.CharField(label='账号',max_length=20,widget=forms.TextInput(attrs=style_class))
+    #password = forms.CharField(label='密码', widget=forms.PasswordInput())
+    password = forms.CharField(required=True,label='密码', widget=forms.PasswordInput(attrs=style_class),
+                          min_length=6,
+                          max_length=10,
+                          error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
+    confirm_password = forms.CharField(required=True,label='确认密码', \
+    widget=forms.PasswordInput(attrs=style_class),
+                          min_length=6,
+                          max_length=10,
+                          error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
     def clean(self):
         cleaned_data=super(UserForm,self).clean()
         username= cleaned_data.get('username')
@@ -91,6 +66,32 @@ class UserForm(forms.ModelForm):
         if password != confirm_password:
             raise forms.ValidationError(u'Passwords are not equal')
         return self.cleaned_data
+
+        #return cleaned_data
+
+
+class RoleForm(ModelForm):
+    class Meta:
+        model = Role
+        fields = ['role_type', 'name']
+
+class NameForm(forms.Form):
+    your_name = forms.CharField(label='Your name', max_length=100)
+
+class ContactForm(forms.Form):
+    subject = forms.CharField(max_length=100)
+    message = forms.CharField(widget=forms.Textarea)
+    sender = forms.EmailField()
+    cc_myself = forms.BooleanField(required=False)
+
+
+class AddCustomerForm(forms.Form):
+    username = forms.CharField(label='登录账号',max_length=20)
+    password = forms.CharField(label='密码', widget=forms.PasswordInput())
+    name = forms.CharField(label='姓名',max_length=30)
+    phone = forms.CharField(max_length=20,error_messages={'required': '数字不能空.', 'invalid': '必须输入数字'})
+    email = forms.EmailField()
+    remark = forms.CharField(widget=forms.Textarea)
 
 
 class CustomerForm(forms.Form):
@@ -141,31 +142,6 @@ class CustomerForm(forms.Form):
                                         customer=customer)
 
         return new_user
-
-
-class RoleForm(ModelForm):
-    class Meta:
-        model = Role
-        fields = ['role_type', 'name']
-
-class NameForm(forms.Form):
-    your_name = forms.CharField(label='Your name', max_length=100)
-
-class ContactForm(forms.Form):
-    subject = forms.CharField(max_length=100)
-    message = forms.CharField(widget=forms.Textarea)
-    sender = forms.EmailField()
-    cc_myself = forms.BooleanField(required=False)
-
-
-class AddCustomerForm(forms.Form):
-    username = forms.CharField(label='登录账号',max_length=20)
-    password = forms.CharField(label='密码', widget=forms.PasswordInput())
-    name = forms.CharField(label='姓名',max_length=30)
-    phone = forms.CharField(max_length=20,error_messages={'required': '数字不能空.', 'invalid': '必须输入数字'})
-    email = forms.EmailField()
-    remark = forms.CharField(widget=forms.Textarea)
-
 
 
 class CustomerForm2(forms.Form):

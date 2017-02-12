@@ -49,6 +49,8 @@ class Role(models.Model):
     def display_name(self):
         return self.name
     display_name.short_description = '角色'
+    def __unicode__(self):
+        return self.name
 
 
 class Contact(models.Model):
