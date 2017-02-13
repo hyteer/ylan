@@ -1,0 +1,48 @@
+{% load bootstrap3 %}
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" class="myModalLabel">添加用户</h4>
+            </div>
+
+            {{ form.non_field_errors }}
+            <form target="testIframeName" role="form" action="/erp/custinfo/{{ user.username }}/" method="post" class="form form-horizontal">
+              {% csrf_token %}
+
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="id_username" class="col-sm-2 control-label">用户名</label>
+                    <div class="col-sm-10">
+                     <input id="id_username" maxlength="30" name="username" type="text" value="{{ user.username }}">
+                    </div>
+                </div>
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">
+                      {% if field.field.required %}<span style="color:red"><b>* </b></span>{% endif %}
+                      {{ field.label }}</label>
+                    <div class="col-sm-10">
+                     {{ field }}
+                    </div>
+                </div>
+                {% endfor %}
+              </div>
+
+
+
+              {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                  {% bootstrap_icon "star" %} Submit
+                </button>
+              {% endbuttons %}
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="confirm btn btn-primary">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>

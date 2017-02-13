@@ -12,7 +12,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import NameForm, ContactForm, CustomerForm,AddCustomerForm,UserForm, \
 CustForm, PostForm
 from django.contrib.auth.models import User
-from .models import Customer
+from django.db import transaction,IntegrityError
+from .models import Customer,Role
 
 
 userTypes = {
@@ -94,7 +95,7 @@ def second_auth(req):
             return HttpResponse('{"code":4003,"msg":"auth fails"}')
 
 
-######################### 用户管理 #######################
+########################### 用户管理 ###########################
 @csrf_exempt
 def temptest(req):
     if req.method == 'POST':
@@ -110,8 +111,9 @@ def customer(req):
     #form = CustomerForm()
     custform = CustForm(prefix='cust')
     return render(req, 'erp/customer.html',{'customers':cutomers,'form':custform,'userform':userform})
-########################## User Management ########################
+
 #### 添加用户 ####
+
 @login_required(redirect_field_name='/erp/login')
 def customer_add(req):
     if req.method == 'POST':
@@ -149,6 +151,53 @@ def customer_add(req):
 
     else:
         return HttpResponse("非法请求!")
+
+@transaction.atomic
+def trans_test(request):
+    create_parent()
+
+    try:
+        with transaction.atomic():
+            generate_relationships()
+    except IntegrityError:
+        handle_exception()
+
+    add_children()
+
+
+#@csrf_exempt
+@transaction.atomic
+@login_required(redirect_field_name='/erp/login')
+def custinfo(req,username):
+    user = get_object_or_404(User, username=username)
+
+    if req.method=="POST":
+        print "user:",username
+        user = get_object_or_404(User, username=username)
+        #import pdb; pdb.set_trace()
+        role = Role.objects.filter(pk=req.POST['role']).first()
+        cust = get_object_or_404(Customer, user=user)
+        #try:
+        try:
+            with transaction.atomic():
+                #user.save()
+                #print "saved user..."
+                cust.email = req.POST['email']
+                cust.phone = req.POST['phone']
+                cust.save()
+                print "saved customer..."
+                return HttpResponse("Post response: hi %s !" % username)
+        except IntegrityError:
+            print "There is an IntegrityError..."
+            return HttpResponse("There is an IntegrityError！")
+
+    else:
+        user = get_object_or_404(User, username=username)
+        #import pdb; pdb.set_trace()
+        cust = get_object_or_404(Customer, name=user.customer.name)
+        custform = CustForm(instance=cust)
+        return render(req,'erp/customer/custinfo.html',{'user':user,'form':custform})
+        #return HttpResponse("Hi %s !" % username)
 
 @csrf_exempt
 def userinfo(req):
@@ -214,7 +263,7 @@ def consign(req):
     return render(req, 'erp/consign.html')
 
 
-######################### Test&Debu #############################
+######################### Test&Debug #############################
 def create_post(request):
     if request.method == 'POST':
         post_text = request.POST.get('the_post')
@@ -245,6 +294,10 @@ def create_post(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
 
 # Model Form View
 @csrf_exempt
