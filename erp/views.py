@@ -113,7 +113,7 @@ def customer(req):
     return render(req, 'erp/customer.html',{'customers':cutomers,'form':custform,'userform':userform})
 
 #### 添加用户 ####
-
+@transaction.atomic
 @login_required(redirect_field_name='/erp/login')
 def customer_add(req):
     if req.method == 'POST':
