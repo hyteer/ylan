@@ -72,6 +72,7 @@ var AXIOS_CONFIG = {
 
 // ******************** 用户管理 *****************
 var USER = '';
+var CURRENT_USER = '{{ user.pk }}'
 var USER_FLAG = 0;
 var USER_DEL = '';
 var USER_ADD = '';
@@ -112,6 +113,28 @@ function user_ajax(type,user){
     USER = '';
   });
 };
+
+// 修改密码
+function setPassword(){
+  var url = '/erp/set_password/'
+  var username = $("#username").text();
+  var old_password = $("#old_password").val();                 //获得form中用户输入的name 注意这里的id_name 与你html中的id一致
+  var new_password = $("#new_password").val();
+  var confirm_password = $("#confirm_password").val();
+  var data = {
+    username:username,
+    password:old_password,
+    new_password:new_password,
+    confirm_password:confirm_password
+  }
+	console.log("Data:");
+  console.log(data);
+	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
+      toastr.success("修改成功！");
+		  console.log(response);
+	  });
+	};
+
 
 // Ajax x-www-form
 function form_ajax(url){
@@ -187,7 +210,7 @@ $('#form11').submit(function(e){
     });
 
 
-function form_ajax() {
+function form_ajax2() {
     var settings = {csrfmiddlewaretoken: '{{ csrf_token }}'}
     console.log("Your are here...csrf_token: "+data.csrfmiddlewaretoken)
 

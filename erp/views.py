@@ -110,7 +110,7 @@ def customer(req):
     userform = UserForm(prefix='user')
     #form = CustomerForm()
     custform = CustForm(prefix='cust')
-    return render(req, 'erp/customer.html',{'customers':cutomers,'form':custform,'userform':userform})
+    return render(req, 'erp/customer.html',{'customers':cutomers,'custform':custform,'userform':userform})
 
 #### 添加用户 ####
 @transaction.atomic
@@ -152,17 +152,24 @@ def customer_add(req):
     else:
         return HttpResponse("非法请求!")
 
+# 修改密码
 @transaction.atomic
-def trans_test(request):
-    create_parent()
-
-    try:
-        with transaction.atomic():
-            generate_relationships()
-    except IntegrityError:
-        handle_exception()
-
-    add_children()
+def set_password(req):
+    #import pdb; pdb.set_trace()
+    data = json.loads(req.body)
+    user = get_object_or_404(User, username=data['username'])
+    from . utils import test_password
+    if data['new_password'] == data['confirm_password'] and test_password(data['new_password']):
+        try:
+            with transaction.atomic():
+                user.set_password(data['new_password'])
+                user.save()
+        except IntegrityError:
+            print "There's an error..."
+        #resp = {"code":"1","msg":"success!"}
+        messages.add_message(req, messages.INFO, '密码修改成功，请重新登录！')
+        return HttpResponseRedirect("/erp/login")
+    return HttpResponse("用户或密码有误.")
 
 
 #@csrf_exempt
@@ -263,7 +270,21 @@ def consign(req):
     return render(req, 'erp/consign.html')
 
 
+
+
 ######################### Test&Debug #############################
+@transaction.atomic
+def trans_test(request):
+    create_parent()
+
+    try:
+        with transaction.atomic():
+            generate_relationships()
+    except IntegrityError:
+        handle_exception()
+
+    add_children()
+
 def create_post(request):
     if request.method == 'POST':
         post_text = request.POST.get('the_post')
