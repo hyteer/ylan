@@ -159,17 +159,22 @@ def set_password(req):
     data = json.loads(req.body)
     user = get_object_or_404(User, username=data['username'])
     from . utils import test_password
-    if data['new_password'] == data['confirm_password'] and test_password(data['new_password']):
-        try:
-            with transaction.atomic():
-                user.set_password(data['new_password'])
-                user.save()
-        except IntegrityError:
-            print "There's an error..."
-        #resp = {"code":"1","msg":"success!"}
-        messages.add_message(req, messages.INFO, '密码修改成功，请重新登录！')
-        return HttpResponseRedirect("/erp/login")
-    return HttpResponse("用户或密码有误.")
+    if not user.check_password(data['password']):
+        return HttpResponse('{"error":1,"msg":"密码错误！"}')
+    if data['new_password'] != data['confirm_password']:
+        return HttpResponse('{"error":1,"msg":"两次密码输入不一致！"}')
+    if not test_password(data['new_password']):
+        return HttpResponse('{"error":1,"msg":"密码不符合要求！"}')
+
+    try:
+        with transaction.atomic():
+            user.set_password(data['new_password'])
+            user.save()
+    except IntegrityError:
+        print "There's an error..."
+    #resp = {"code":"1","msg":"success!"}
+    messages.add_message(req, messages.INFO, '{"error":0,"msg":"密码修改成功，请重新登录！"}')
+    return HttpResponseRedirect("/erp/login")
 
 
 #@csrf_exempt

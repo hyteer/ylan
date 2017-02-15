@@ -130,7 +130,12 @@ function setPassword(){
 	console.log("Data:");
   console.log(data);
 	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
-      toastr.success("修改成功！");
+    if(response.data.error == 0){
+      toastr.success(response.data.msg);
+      top.location.href="/erp/login";
+    }else{
+      toastr.info(response.data.msg);
+    }
 		  console.log(response);
 	  });
 	};
