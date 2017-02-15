@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>YLT-{% block title %}永兰WMS系统{% endblock %}</title>
+  <title>YLT-{% block title %}WMS系统{% endblock %}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -108,13 +108,35 @@ desired effect
 <script src="/static/plugins/jquery.serializejson.min.js"></script>
 <script src="/static/plugins/qs.js"></script>
 <link rel="stylesheet" href="/static/erp/style.css">
-
+{% if messages %}
+    {% for message in messages %}
+    <script type="text/javascript">
+    toastr.options = {
+            closeButton: false,
+            debug: false,
+            //progressBar: true,
+            //positionClass: "toast-bottom-center",
+    		positionClass: "toast-top-center",
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            timeOut: "8000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+      };
+    //console.log("message:"+"{{message}}");
+    $(document).ready(function(){toastr.success("{{ message }}");});
+    </script>
+    {% endfor %}
+{% endif %}
 {% block scripts %}{% endblock %}
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
-{% block bottom %}{% endblock %}
 </body>
 
 

@@ -27,7 +27,6 @@ button.topbutton{padding:3px 5px;}
   {% include "erp/customer/add.html" %}
   {% include "erp/customer/edit.html" %}
   {% include "erp/customer/del.html" %}
-  {% include "erp/customer/set_password.html" %}
   {% include "erp/customer/freeze.html" %}
   <!-- 模态框（Modal） -->
   {% include "erp/customer/edit.html" %}
@@ -66,10 +65,7 @@ $(document).ready(function(){
     //ajax_test();
   });
 
-  // 修改密码(AJAX)
-  $("#setPassword button.confirm").click(function(){
-      setPassword(CURRENT_USER);
-  });
+
 
 
 });

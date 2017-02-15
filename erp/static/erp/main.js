@@ -9,7 +9,7 @@ toastr.options = {
         onclick: null,
         showDuration: "300",
         hideDuration: "1000",
-        timeOut: "5000",
+        timeOut: "4000",
         extendedTimeOut: "1000",
         showEasing: "swing",
         hideEasing: "linear",
@@ -70,7 +70,7 @@ var AXIOS_CONFIG = {
   xsrfHeaderName: 'X-CSRFToken'
 }
 
-// ******************** 用户管理 *****************
+// ******************** Functions  *********************/
 var USER = '';
 var CURRENT_USER = '{{ user.pk }}'
 var USER_FLAG = 0;
@@ -114,44 +114,7 @@ function user_ajax(type,user){
   });
 };
 
-// 修改密码
-function setPassword(){
-  var url = '/erp/set_password/'
-  var username = $("#username").text();
-  var old_password = $("#old_password").val();                 //获得form中用户输入的name 注意这里的id_name 与你html中的id一致
-  var new_password = $("#new_password").val();
-  var confirm_password = $("#confirm_password").val();
-  var data = {
-    username:username,
-    password:old_password,
-    new_password:new_password,
-    confirm_password:confirm_password
-  }
-	console.log("Data:");
-  console.log(data);
-	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
-    if(response.data.error == 0){
-      toastr.success(response.data.msg);
-      top.location.href="/erp/login";
-    }else{
-      toastr.info(response.data.msg);
-    }
-		  console.log(response);
-	  });
-	};
-
-
-// Ajax x-www-form
-function form_ajax(url){
-  var data = new FormData($('#addUser form')[0]);
-	console.log("Data:")
-  console.log(data);
-	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
-		  console.log(response);
-	  });
-	};
-
-
+// 添加用户
 function customer_add_ajax(){
   var data = new FormData($(this));
   data.append("username", $("#id_username").val());
@@ -180,6 +143,54 @@ function customer_add_ajax(){
     });
 }
 
+// 修改密码
+function setPassword(){
+  var url = '/erp/set_password/'
+  var username = $("#username").text();
+  var old_password = $("#old_password").val();
+  var new_password = $("#new_password").val();
+  var confirm_password = $("#confirm_password").val();
+  var data = {
+    username:username,
+    password:old_password,
+    new_password:new_password,
+    confirm_password:confirm_password
+  }
+	console.log("Data:");
+  console.log(data);
+	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
+    if(response.data.error == 0){
+      console.log("Success Response....")
+      toastr.success(response.data.msg);
+      top.location.href="/erp/login";
+    }else{
+      toastr.info(response.data.msg);
+    }
+		  console.log(response);
+	  });
+	};
+
+/********************** AJax Events **********************/
+// Ajax x-www-form
+function form_ajax(url){
+  var data = new FormData($('#addUser form')[0]);
+	console.log("Data:")
+  console.log(data);
+	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
+		  console.log(response);
+	  });
+	};
+$(document).ready(function(){
+  // 修改密码(AJAX)
+  $("#setPassword button.confirm").click(function(){
+      setPassword(CURRENT_USER);
+  });
+
+});
+
+
+
+/************************************************************/
 
 $('#form11').submit(function(e){
         e.preventDefault();

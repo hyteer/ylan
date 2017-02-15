@@ -11,38 +11,59 @@ class PostForm(forms.Form):
 
 class CustForm(ModelForm):
 
+    style_class = {'class':'form-control'}
+    username = forms.CharField(label='账号',max_length=20,widget=forms.TextInput(attrs=style_class))
+    #password = forms.CharField(label='密码', widget=forms.PasswordInput())
+    password = forms.CharField(required=True,label='密码', widget=forms.PasswordInput(attrs=style_class),
+                          min_length=6,
+                          max_length=10,
+                          error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
+    confirm_password = forms.CharField(required=True,label='确认密码',
+                      widget=forms.PasswordInput(attrs=style_class),
+                      min_length=6,
+                      max_length=10,
+                      error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
+
+
     class Meta:
         model = Customer
         #fields = ['id','user','role','name', 'phone', 'email','country']
-        fields = ['role','name', 'phone', 'email','country']
+        fields = ['username','password','confirm_password','role','name', 'phone', 'email','country']
         exclude = ('user',)
-        '''
-        widgets = {
-            'user': forms.TextInput(attrs={'required': True,'placeholder':'用户名'}),
-        }
-
     def clean_username(self): # check if username dos not exist before
         try:
-            User.objects.get(username=self.cleaned_data['user']) #get user from user model
+            User.objects.get(username=self.cleaned_data['username']) #get user from user model
         except User.DoesNotExist :
-            return self.cleaned_data['user'].pk
-
+            return self.cleaned_data['username']
         raise forms.ValidationError("this user exist already")
+
     def clean(self):
         cleaned_data=super(CustForm,self).clean()
         username=cleaned_data.get('username')
         name=cleaned_data.get('name')
         phone = cleaned_data.get('phone')
         email = cleaned_data.get('email')
+        password = cleaned_data['password']
+        confirm_password = cleaned_data['confirm_password']
 
-        if not user:
-            self._errors['user'] = self.error_class([u"请输入用户名!"])
-        if not name:
-            self._errors['name'] = self.error_class([u"请输入姓名!"])
-        if not phone:
-            self._errors['phone'] = self.error_class([u"请输入电话!"])
+        if not username:
+            self._errors['username'] = self.error_class([u"请输入用户名!"])
+        if password != confirm_password:
+            raise forms.ValidationError(u'Passwords are not equal')
         return cleaned_data
-        '''
+
+    def save(self):
+        data = self.cleaned_data
+        user = User.objects.create_user(username=data['username'],password=data['password'])
+        cust = Customer.objects.create(user=user,role=data['role'])
+        if data['name']:
+            cust.name = data['name']
+        if data['phone']:
+            cust.phone = data['phone']
+        cust.save()
+        return True
+
+
 
 
 class UserForm(forms.ModelForm):

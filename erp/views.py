@@ -107,47 +107,33 @@ def temptest(req):
 @login_required(redirect_field_name='/erp/login')
 def customer(req):
     cutomers = Customer.objects.all()
-    userform = UserForm(prefix='user')
+    #userform = UserForm(prefix='user')
     #form = CustomerForm()
     custform = CustForm(prefix='cust')
-    return render(req, 'erp/customer.html',{'customers':cutomers,'custform':custform,'userform':userform})
+    return render(req, 'erp/customer.html',{'customers':cutomers,'custform':custform})
 
 #### 添加用户 ####
 @transaction.atomic
 @login_required(redirect_field_name='/erp/login')
 def customer_add(req):
     if req.method == 'POST':
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         #form = UserForm(req.POST)
-        form = CustomerForm(req.POST)
+        #form = CustomerForm(req.POST)
+        form = CustForm(req.POST,prefix='cust')
 
         if form.is_valid():
 
             print "Post Data:",form.cleaned_data
             #import pdb; pdb.set_trace()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            name = form.cleaned_data['name']
-            phone = form.cleaned_data['phone']
-            user = User.objects.filter(username = username).first()
-            #
-            if user:
-                print ("User exist...")
-                #import pdb;pdb.set_trace()
-                messages.add_message(req, messages.INFO, '用户名已存在!.')
-                return HttpResponse({"code":"4000","msg":"failed!"})
-            else:
-                user = User.objects.create_user(username=username, password=password)
-                customer = Customer(user=user,name=name,phone=phone,role_id=1)
-                customer.save()
-                # process the data in form.cleaned_data as required
-                data = {"code":"1","msg":"success!"}
-                data = json.dumps(data)
-                return HttpResponse(data)
+            if form.save():
+                print "Created a new user..."
+                return HttpResponse('{"code":0,"msg":"created..."}')
         else:
             #import pdb; pdb.set_trace()
             errors = {'errors':form.errors['__all__']}
-            return render_to_response('erp/customer.html',{'form':form})
+            print errors
+            return HttpResponse('{"code":11,"errors":errors}')
 
     else:
         return HttpResponse("非法请求!")
@@ -172,9 +158,8 @@ def set_password(req):
             user.save()
     except IntegrityError:
         print "There's an error..."
-    #resp = {"code":"1","msg":"success!"}
-    messages.add_message(req, messages.INFO, '{"error":0,"msg":"密码修改成功，请重新登录！"}')
-    return HttpResponseRedirect("/erp/login")
+    import pdb; pdb.set_trace()
+    return HttpResponse('{"error":0,"msg":"密码修改成功，请重新登录！"}"}')
 
 
 #@csrf_exempt
