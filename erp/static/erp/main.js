@@ -84,6 +84,10 @@ var USER_CONFIG = {
     del:{url:"/customer_del/",msg:"已删除！"}
 };
 
+function redirect_to_login(){
+  top.location.href="/erp/login";
+}
+
 function user_event(){
   $("#userlist tr button").each(function (i) {
     $(this).click(function(){
@@ -160,9 +164,10 @@ function setPassword(){
   console.log(data);
 	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
     if(response.data.error == 0){
-      console.log("Success Response....")
-      toastr.success(response.data.msg);
-      top.location.href="/erp/login";
+      console.log("Success Response....");
+      toastr.success(response.data.msg)
+      setTimeout("redirect_to_login()", 2000);
+
     }else{
       toastr.info(response.data.msg);
     }

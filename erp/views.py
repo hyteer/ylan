@@ -14,6 +14,7 @@ CustForm, PostForm
 from django.contrib.auth.models import User
 from django.db import transaction,IntegrityError
 from .models import Customer,Role
+from django_ajax.decorators import ajax
 
 
 userTypes = {
@@ -158,8 +159,8 @@ def set_password(req):
             user.save()
     except IntegrityError:
         print "There's an error..."
-    import pdb; pdb.set_trace()
-    return HttpResponse('{"error":0,"msg":"密码修改成功，请重新登录！"}"}')
+    #import pdb; pdb.set_trace()
+    return HttpResponse('{"error":0,"msg":"密码修改成功，请重新登录！"}')
 
 
 #@csrf_exempt
@@ -263,6 +264,11 @@ def consign(req):
 
 
 ######################### Test&Debug #############################
+@ajax
+def django_ajax(request):
+    do_something()
+
+
 @transaction.atomic
 def trans_test(request):
     create_parent()
