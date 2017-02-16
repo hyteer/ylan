@@ -2,15 +2,12 @@
 {% block title %}首页{% endblock %}
 {% block content %}
 <h3>首页</h3>
-<!-- Ajax form test-->
-<form method="POST" id="post-form">
-    {% csrf_token %}
-    <div class="fieldWrapper" id="test_post">
-        {{ form.post_text }}
-    </div>
-    <div id="results"></div> <!-- errors go here -->
-    <input type="submit" value="Post" class="tiny button">
-</form>
-<ul id="talk">
+<!-- Ajax test-->
+
+    <div id="results">ajax-test container...</div> <!-- errors go here -->
+    <button type="button" id="ajaxtest" data-toggle="modal" data-target="#addUser">
+      测试
+    </button>
+
 
 {% endblock %}

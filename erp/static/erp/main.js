@@ -99,6 +99,42 @@ function user_event(){
   });
 };
 
+// Links Ajax request
+$("a.mainLink").each(function (i) {
+    $(this).click(function(e){
+      e.preventDefault();
+      var url = $(this).attr('href');
+      var data = {}
+      console.log("This Link:"+url);
+      console.log($(this));
+      axios.post(url, data,AXIOS_CONFIG).then(function (response) {
+    		  console.log(response.data);
+          widget = response.data
+
+    	  });
+     });
+});
+
+$("#ajaxtest").each(function (i) {
+    $(this).click(function(e){
+      e.preventDefault();
+      var url = '/erp/django_ajax/';
+      var data = {}
+      //console.log("This Link:"+url);
+      //console.log($(this));
+
+      //$('#results').addClass("whirl no overlay");
+      $('#results').addClass("load3");
+      //$('#results').isLoading({ text: "Loading", position: "inside" });
+      axios.post(url, data,AXIOS_CONFIG).then(function (response) {
+    		  console.log(response.data);
+          widget = response.data
+          $('#results').removeClass("whirl no overlay");
+          $('#results').html(widget);
+    	  });
+     });
+});
+
 
 function user_ajax(type,user){
   console.log("user:"+user);
@@ -124,9 +160,7 @@ function customer_add_ajax(){
   data.append("username", $("#id_username").val());
   data.append("password",$("#id_password").val());
   //data.append("confirm_password",$("#id_confirm_password").val());
-
   console.log("data:"+data)
-
   $.ajax({
       url:'/erp/customer_add/',
       type: 'POST',
@@ -147,6 +181,18 @@ function customer_add_ajax(){
     });
 }
 
+// 删除用户
+function user_remove(type){
+  $("#userlist tr button").each(function (i) {
+    $(this).click(function(){
+      console.log("Origin User Value:"+USER);
+      USER=$(this).parents("tr").attr('name')
+      console.log("索引："+$(this).index()+"\nUser:"+USER);
+      //alert("内容："+$(this).parents("tr").html());
+     });
+  });
+};
+
 // 修改密码
 function setPassword(){
   var url = '/erp/set_password/'
@@ -166,7 +212,7 @@ function setPassword(){
     if(response.data.error == 0){
       console.log("Success Response....");
       toastr.success(response.data.msg)
-      setTimeout("redirect_to_login()", 2000);
+      setTimeout("redirect_to_login()", 1500);
 
     }else{
       toastr.info(response.data.msg);
@@ -262,18 +308,6 @@ function form_ajax2() {
 };
 
 
-
-function user_remove(type){
-
-  $("#userlist tr button").each(function (i) {
-    $(this).click(function(){
-      console.log("Origin User Value:"+USER);
-      USER=$(this).parents("tr").attr('name')
-      console.log("索引："+$(this).index()+"\nUser:"+USER);
-      //alert("内容："+$(this).parents("tr").html());
-     });
-  });
-};
 
 /******************* Test ********************/
 function ajax_test(){

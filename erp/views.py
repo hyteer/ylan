@@ -4,6 +4,7 @@ import json,time,datetime
 from django.shortcuts import render,HttpResponseRedirect, get_object_or_404, \
 render_to_response
 from django.http import HttpResponse
+from django.template import loader, Context
 from django.contrib import messages
 #from django.contrib.messages import constants as messages
 from django.contrib.auth import authenticate,login, logout
@@ -14,7 +15,7 @@ CustForm, PostForm
 from django.contrib.auth.models import User
 from django.db import transaction,IntegrityError
 from .models import Customer,Role
-from django_ajax.decorators import ajax
+
 
 
 userTypes = {
@@ -264,9 +265,17 @@ def consign(req):
 
 
 ######################### Test&Debug #############################
-@ajax
-def django_ajax(request):
-    do_something()
+#@csrf_exempt
+def django_ajax(req):
+    #import pdb; pdb.set_trace()
+    c = 2 + 3
+    #html = render('erp')
+    wd = loader.get_template('erp/components/widget.html')
+    html = wd.render()
+    #return HttpResponse('{"result": "erp/consign.html"}')
+    #return render(req, 'erp/components/widget.html')
+    #return HttpResponse(html)
+    return render_to_response('erp/components/widget.html')
 
 
 @transaction.atomic

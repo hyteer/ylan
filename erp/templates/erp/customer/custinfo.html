@@ -18,7 +18,7 @@
                      <input id="id_username" maxlength="30" name="username" type="text" value="{{ user.username }}">
                     </div>
                 </div>
-                {% for field in form %}
+                {% for field in custform %}
                 <div class="form-group">
                     {{ field.errors }}
                     <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">
