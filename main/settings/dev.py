@@ -148,3 +148,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_HOST_USER = 'hyteer@qq.com'
+EMAIL_HOST_PASSWORD = 'rvkxxmswbjeseabj'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

@@ -35,9 +35,9 @@
 
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu" id="navbar-collapse">
-      <li class="header">产品管理</li>
       <!-- Optionally, you can add icons to the links -->
       <li class="active"><a href="/erp/consign"><i class="fa fa-truck"></i> <span>发货管理</span></a></li>
+      <li><a href="/erp/product"><i class="fa fa-product-hunt"></i> <span>产品管理</span></a></li>
       <li><a href="#"><i class="fa fa-exclamation-circle"></i> <span>问题订单{{ usertype }}</span></a></li>
       <li><a href="#"><i class="fa fa-ship"></i> <span>头程运输{{ usertype }}</span></a></li>
 
@@ -57,6 +57,7 @@
 
       {% if user.customer.role.id >= 2 %}
       <li><a href="/erp/customer"><i class="fa fa-group"></i> <span>客户管理</span></a></li>
+      <li><a href="/erp/setting"><i class="fa fa-gears"></i> <span>系统设置</span></a></li>
       {% endif %}
 
     </ul>

@@ -98,12 +98,14 @@ def second_auth(req):
 
 
 ########################### 用户管理 ###########################
-@csrf_exempt
-def temptest(req):
-    if req.method == 'POST':
-        return HttpResponse('{"code":1,"msg":"ok"}')
-    else:
-        return HttpResponse('wrong request...')
+
+@login_required(redirect_field_name='/erp/login')
+def setting(req):
+    return render(req, 'erp/pages/setting.html')
+
+@login_required(redirect_field_name='/erp/login')
+def product(req):
+    return render(req, 'erp/pages/product.html')
 
 #### 客户管理页 ####
 @login_required(redirect_field_name='/erp/login')
@@ -320,6 +322,13 @@ def create_post(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
+@csrf_exempt
+def temptest(req):
+    if req.method == 'POST':
+        return HttpResponse('{"code":1,"msg":"ok"}')
+    else:
+        return HttpResponse('wrong request...')
 
 def results(request, question_id):
     response = "You're looking at the results of question %s."
