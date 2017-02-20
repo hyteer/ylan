@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .forms import NameForm, ContactForm, CustomerForm,AddCustomerForm,UserForm, \
-CustForm, PostForm
+CustForm, PostForm, RegisterForm
 from django.contrib.auth.models import User
 from django.db import transaction,IntegrityError
 from .models import Customer,Role
@@ -25,6 +25,8 @@ userTypes = {
     'managers':3,
     'super':99
 }
+
+DEFAULT_ROLE = Role.objects.get(role_type=1)
 
 # Create your views here.
 @login_required(redirect_field_name='/erp/login')
@@ -78,14 +80,35 @@ def user_logout(req):
     return HttpResponseRedirect('/erp/login')
 
 
-
+# 用户注册
+@transaction.atomic
 def register(req):
+    resp = {"error":0,"msg":"收到消息!"}
     if req.method == 'POST':
         print("Recieved a post request...")
+        print("Data:%s" % req.body)
         import pdb; pdb.set_trace()
-        return HttpResponse("Recieved a post request...")
+        data = json.loads(req.body)
+
+        try:
+            with transaction.atomic():
+                user = User.objects.create_user(username=data['username'],password=data['password'])
+                cust = Customer.objects.create(user=user,role=DEFAULT_ROLE,email = data['email'])
+                cust.save()
+                print "saved customer..."
+                resp['msg'] = '注册成功，即将跳转到登录界面！'
+                resp = json.dumps(resp)
+                return HttpResponse(resp)
+        except IntegrityError:
+            print "There is an IntegrityError..."
+            resp['error'] = 4000
+            resp['msg'] = '数据库错误！'
+            return HttpResponse(resp)
+
     else:
-       return render(req, 'erp/pages/register.html')
+        form = RegisterForm()
+        return render(req, 'erp/pages/register.html',{'form':form})
+        #return render(req, 'erp/pages/register.html')
 
 @login_required
 def lockscreen(req):
@@ -153,7 +176,7 @@ def set_password(req):
     #import pdb; pdb.set_trace()
     data = json.loads(req.body)
     user = get_object_or_404(User, username=data['username'])
-    from . utils import test_password
+    from .utils import test_password
     if not user.check_password(data['password']):
         return HttpResponse('{"error":1,"msg":"密码错误！"}')
     if data['new_password'] != data['confirm_password']:

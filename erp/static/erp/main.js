@@ -1,76 +1,4 @@
-
-// toastr 消息提示设置(已改用jquery toast)
-toastr.options = {
-        closeButton: false,
-        debug: false,
-        //progressBar: true,
-        //positionClass: "toast-bottom-center",
-		positionClass: "toast-top-center",
-        onclick: null,
-        showDuration: "300",
-        hideDuration: "1000",
-        timeOut: "4000",
-        extendedTimeOut: "1000",
-        showEasing: "swing",
-        hideEasing: "linear",
-        showMethod: "fadeIn",
-        hideMethod: "fadeOut"
-  };
-
-// JQuery Toast wraper function
-// 用于消息提示
-function notice(type,msg){
-  var type = arguments[0] ? arguments[0] : 'info';
-  var msg = arguments[1] ? arguments[1] : '提示消息';
-  var bgcolor='#337dac';
-  var icon='info'
-  switch(type)
-  {
-      case 'ok':
-          bgcolor='#187d49';
-          icon='success';
-          break;
-      case 'warn':
-          bgcolor='#7d2a18';
-          icon='warning';
-          break;
-  }
-  $.toast({
-    //heading: '操作结果',
-    text: msg,
-    position: 'top-center',
-    icon: icon,
-    bgColor: bgcolor,
-    stack: false
-  });
-}
-
-// ************Get csrf token for ajax************
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-
-//var csrftoken = getCookie('csrftoken');
-// **** axios config
-var AXIOS_CONFIG = {
-  xsrfCookieName: 'csrftoken',
-  xsrfHeaderName: 'X-CSRFToken'
-}
-
-// ******************** Functions  *********************/
+// Globals
 var USER = '';
 var CURRENT_USER = '{{ user.pk }}'
 var USER_FLAG = 0;
@@ -84,9 +12,8 @@ var USER_CONFIG = {
     del:{url:"/customer_del/",msg:"已删除！"}
 };
 
-function redirect_to_login(){
-  top.location.href="/erp/login";
-}
+
+// ******************** Functions  *********************/
 
 function user_event(){
   $("#userlist tr button").each(function (i) {
@@ -110,7 +37,6 @@ $("a.mainLink").each(function (i) {
       axios.post(url, data,AXIOS_CONFIG).then(function (response) {
     		  console.log(response.data);
           widget = response.data
-
     	  });
      });
 });
@@ -122,7 +48,6 @@ $("#ajaxtest").each(function (i) {
       var data = {}
       //console.log("This Link:"+url);
       //console.log($(this));
-
       //$('#results').addClass("whirl no overlay");
       $('#results').addClass("load3");
       //$('#results').isLoading({ text: "Loading", position: "inside" });
@@ -220,6 +145,12 @@ function setPassword(){
 		  console.log(response);
 	  });
 	};
+
+  // 注册用户
+  function register(){
+    var url = '/erp/register/'
+    //var username = $
+  }
 
 /********************** AJax Events **********************/
 // Ajax x-www-form
