@@ -80,7 +80,12 @@ def user_logout(req):
 
 
 def register(req):
-	return render(req, 'erp/pages/register.html')
+    if req.method == 'POST':
+        print("Recieved a post request...")
+        import pdb; pdb.set_trace()
+        return HttpResponse("Recieved a post request...")
+    else:
+       return render(req, 'erp/pages/register.html')
 
 @login_required
 def lockscreen(req):

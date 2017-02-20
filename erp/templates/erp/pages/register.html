@@ -1,5 +1,5 @@
 {% extends 'erp/base/base.html' %}
-{% block title %}永兰WMS系统 | 登录{% endblock %}
+{% block title %}永兰WMS系统 | 注册{% endblock %}
 
   {% block headers %}
   <style>
@@ -17,7 +17,7 @@
   <div class="register-box-body">
     <p class="login-box-msg">注 册</p>
 
-    <form action="/static/erp/index.html" method="post">
+    <form action="/erp/register/" method="post">
       {% csrf_token %}
       <div class="form-group has-feedback">
         <input type="text" name="username" class="form-control" placeholder="用户名">
