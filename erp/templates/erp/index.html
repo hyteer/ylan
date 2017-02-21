@@ -2,6 +2,18 @@
 {% block title %}首页{% endblock %}
 {% block content %}
 <h3>首页</h3>
+<div class="row">
+  <div class="col-lg-1 col-md-3">
+    <button type="button" class="topbutton btn btn-block btn-primary" data-toggle="modal" data-target="#addUser">添加</button>
+  </div>
+  <div class="col-lg-1 col-md-3">
+    <button id="testEvent" type="button" class="topbutton btn btn-block btn-primary">Test</button>
+  </div>
+  <div class="col-lg-1 col-md-3">
+    <button id="testbt" type="button" class="topbutton btn btn-block btn-primary">Notice</button>
+  </div>
+</div>
+
 <!-- Ajax test-->
 
     <div id="results">ajax-test container...</div> <!-- errors go here -->
@@ -10,4 +22,29 @@
     </button>
 
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+//* **************Test: http ajax请求*****************
+$(document).ready(function(){
+  $("#testEvent").click(function(){
+    axios.post('/erp/ajax_test/', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+    },AXIOS_CONFIG)
+  .then(function (response) {
+    toastr.success(response.data.msg);
+    console.log(response);
+    })
+  });
+});
+// *******************动态显示alert********************
+$(document).ready(function(){
+  // Test: toast消息
+  $("#testbt").click(function(){
+    notice('ok','Test message...');
+  });
+});
+</script>
 {% endblock %}

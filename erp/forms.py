@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django import forms
 from django.forms import ModelForm
-from models import Customer,Role
+from .models import Customer,Role
 from django.contrib.auth.models import User
 
 class PostForm(forms.Form):

@@ -97,12 +97,12 @@ def register(req):
                 user = User.objects.create_user(username=data['username'],password=data['password'])
                 cust = Customer.objects.create(user=user,role=DEFAULT_ROLE,email = data['email'])
                 cust.save()
-                print "saved customer..."
+                print("saved customer...")
                 resp['msg'] = '注册成功，即将跳转到登录界面！'
                 resp = json.dumps(resp)
                 return HttpResponse(resp)
         except IntegrityError:
-            print "There is an IntegrityError..."
+            print("There is an IntegrityError...")
             resp['error'] = 4000
             resp['msg'] = '数据库错误！'
             return HttpResponse(resp)
@@ -140,18 +140,11 @@ def product(req):
 #### 客户管理页 ####
 @login_required(redirect_field_name='/erp/login')
 def customer(req):
-    customers = Customer.objects.all()
+    cutomer_list = Customer.objects.all()
+    paginator = Paginator(cutomer_list,16)
     #userform = UserForm(prefix='user')
     #form = CustomerForm()
     custform = CustForm(prefix='cust')
-    return render(req, 'erp/customer.html',{'customers':customers,'custform':custform})
-
-@login_required(redirect_field_name='/erp/login')
-def custlist(req):
-    cutomer_list = Customer.objects.all()
-    paginator = Paginator(cutomer_list,12)
-    #userform = UserForm(prefix='user')
-    #form = CustomerForm()
     page = req.GET.get('page')
     try:
         customers = paginator.page(page)
@@ -161,7 +154,25 @@ def custlist(req):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         customers = paginator.page(paginator.num_pages)
-    return render(req, 'erp/customer/custlist.html', {'customers': customers})
+    return render(req, 'erp/customer/index.html', {'customers': customers,'custform':custform})
+
+@login_required(redirect_field_name='/erp/login')
+def custlist(req):
+    cutomer_list = Customer.objects.all()
+    paginator = Paginator(cutomer_list,16)
+    #userform = UserForm(prefix='user')
+    #form = CustomerForm()
+    custform = CustForm(prefix='cust')
+    page = req.GET.get('page')
+    try:
+        customers = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        customers = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        customers = paginator.page(paginator.num_pages)
+    return render(req, 'erp/customer/index.html', {'customers': customers,'custform':custform})
 
 #### 添加用户 ####
 @transaction.atomic
@@ -175,15 +186,15 @@ def customer_add(req):
 
         if form.is_valid():
 
-            print "Post Data:",form.cleaned_data
+            print("Post Data:",form.cleaned_data)
             #import pdb; pdb.set_trace()
             if form.save():
-                print "Created a new user..."
+                print("Created a new user...")
                 return HttpResponse('{"code":0,"msg":"created..."}')
         else:
             #import pdb; pdb.set_trace()
             errors = {'errors':form.errors['__all__']}
-            print errors
+            print(errors)
             return HttpResponse('{"code":11,"errors":errors}')
 
     else:
@@ -208,7 +219,7 @@ def set_password(req):
             user.set_password(data['new_password'])
             user.save()
     except IntegrityError:
-        print "There's an error..."
+        print("There's an error...")
     #import pdb; pdb.set_trace()
     return HttpResponse('{"error":0,"msg":"密码修改成功，请重新登录！"}')
 
@@ -220,7 +231,7 @@ def custinfo(req,username):
     user = get_object_or_404(User, username=username)
 
     if req.method=="POST":
-        print "user:",username
+        print("user:",username)
         user = get_object_or_404(User, username=username)
         #import pdb; pdb.set_trace()
         role = Role.objects.filter(pk=req.POST['role']).first()
@@ -229,14 +240,14 @@ def custinfo(req,username):
         try:
             with transaction.atomic():
                 #user.save()
-                #print "saved user..."
+                #print("saved user...")
                 cust.email = req.POST['email']
                 cust.phone = req.POST['phone']
                 cust.save()
-                print "saved customer..."
+                print("saved customer...")
                 return HttpResponse("Post response: hi %s !" % username)
         except IntegrityError:
-            print "There is an IntegrityError..."
+            print("There is an IntegrityError...")
             return HttpResponse("There is an IntegrityError！")
 
     else:
@@ -270,12 +281,12 @@ def userinfo(req):
 def customer_edit(req):
     if req.method == 'POST':
         import pdb; pdb.set_trace()
-        print "Data:",req.body
+        print("Data:",req.body)
         return HttpResponse("已收到.\nData:"+req.body)
         #import pdb; pdb.set_trace()
         '''
         if form.is_valid():
-            print "Post Data:",form.cleaned_data
+            print("Post Data:",form.cleaned_data)
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             name = form.cleaned_data['name']
@@ -296,9 +307,9 @@ def customer_edit(req):
 def customer_del(req):
     if req.method == 'POST':
         #import pudb; pudb.set_trace()
-        print "Data:",req.body
+        print("Data:",req.body)
         data = json.loads(req.body)
-        print "name:",data['username']
+        print("name:",data['username'])
         user = User.objects.filter(username=data['username']).first()
         user.delete()
         return HttpResponse('{"code":0,"msg":"删除成功！"}')
@@ -343,7 +354,7 @@ def create_post(request):
     if request.method == 'POST':
         post_text = request.POST.get('the_post')
         response_data = {}
-        print "Post Text:",request.body
+        print("Post Text:",request.body)
 
         #post = Post(text=post_text, author=request.user)
         #post.save()
@@ -385,7 +396,7 @@ def results(request, question_id):
 @csrf_exempt
 def ajax_test2(req):
     if req.method=="POST":
-        print "Data:",req.body
+        print("Data:",req.body)
         return HttpResponse("已收到.\nData:"+req.body)
             #return HttpResponseRedirect(reverse("customer"))
     else:
@@ -395,10 +406,13 @@ def ajax_test2(req):
 def ajax_test(req):
     if req.method=="POST":
         #import pdb; pdb.set_trace()
+        resp = {"code":1,"msg":"ok"}
         data = req.body
-        print "Data:",data
-        #print "Data received:",req.body
-        return HttpResponse("已收到.\nData:"+data)
+        resp['msg'] = str(data)
+        resp = json.dumps(resp)
+        print("Data:",data)
+        #print("Data received:",req.body)
+        return HttpResponse(resp)
             #return HttpResponseRedirect(reverse("customer"))
     else:
         return HttpResponse("非法请求!")

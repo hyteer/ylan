@@ -62,7 +62,7 @@ class Contact(models.Model):
     country = models.ForeignKey("Country", null=True, blank=True)
     remark = models.TextField(blank=True, null=True)
     def __unicode__(self):
-		return self.name
+        return self.name
 
 
 

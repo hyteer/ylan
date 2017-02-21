@@ -1,0 +1,99 @@
+<style>
+.row tr button{padding:3px 5px;width:50px;height:60%;font-size:12px}
+#userlist .button-list{padding:0 8px}
+div.pagination {margin: 0 10px;}
+section.content{padding: 0 10px}
+div.box-footer{line-height: 30px;}
+th.toolheader{padding-right: 30px}
+
+</style>
+<div class="row" style="margin-top:0">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">客户列表</h3>
+
+              <div class="box-tools">
+                <div class="input-group input-group-sm  pull-left" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-left" placeholder="Search">
+
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+
+                </div>
+                <div class="pagination">
+                  <ul class="pagination pagination-sm no-margin pull-right">
+                    {% if customers.has_previous %}<li><a href="?page={{ customers.previous_page_number }}">«</a></li>{% endif %}
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    {% if customers.has_next %}<li><a href="?page={{ customers.next_page_number }}">»</a></li>{% endif %}
+                  </ul>
+
+
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+
+              <table id="userlist" class="table table-hover">
+                <tbody><tr>
+                  <th>姓名</th>
+                  <th>账号</th>
+                  <th>电话</th>
+                  <th>Email</th>
+                  <th>角色</th>
+                  <th>状态</th>
+                  <th class="toolheader pull-right" style="padding:8px 90px">操作</th>
+                </tr>
+                {% for customer in customers %}
+		            <tr name="{{ customer.user.username }}" pk="{{ customer.user.id }}">
+                  <td>{{ customer.name }}</td>
+                  <td>{{ customer.user.username }}</td>
+                  <td>{{ customer.phone }}</td>
+                  <td>{{ customer.email }}</td>
+                  <td>{{ customer.role.name }}</td>
+                  {% if customer.status == 0 %}
+                  <td><span class="label label-danger">{{ customer.status_name }}</span></td>
+                  {% else %}
+                  <td><span class="label label-success">{{ customer.status_name }}</span></td>
+                  {% endif %}
+                  <td>
+                    <div class="row pull-right" style="margin:0">
+                    <div class="button-list col-lg-4 col-md-4">
+                    <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editUser">编辑</button>
+                    </div>
+                    <div class="button-list col-lg-4 col-md-4">
+                    <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#freezeUser">冻结</button>
+                    </div>
+                    <div class="button-list col-lg-4 col-md-4">
+                    <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#delUser">删除</button>
+                  </div>
+
+                </div>
+                </td>
+
+                </tr>
+	               {% endfor %}
+              </tbody></table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+              <span>第 {{ customers.number }} 页/</span>
+              <span>共 {{ customers.paginator.num_pages }} 页</span>
+              <ul class="pagination pagination-sm no-margin pull-right">
+
+                {% if customers.has_previous %}<li><a href="?page={{ customers.previous_page_number }}">«</a></li>{% endif %}
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                {% if customers.has_next %}<li><a href="?page={{ customers.next_page_number }}">»</a></li>{% endif %}
+              </ul>
+              </ul>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>

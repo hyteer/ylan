@@ -1,9 +1,11 @@
 {% extends 'erp/base/main.html' %}
 {% block title %}客户管理{% endblock %}
+{% block head %}
 <style>
 button.topbutton{padding:3px 5px;}
-section.content{padding: 5px 10px}
+
 </style>
+{% endblock %}
 
 {% block breadcrumb %}
   <li class="active">客户管理</li>
@@ -11,19 +13,8 @@ section.content{padding: 5px 10px}
 
 {% block content %}
 
-<div class="row">
-  <div class="col-lg-1 col-md-3">
-    <button type="button" class="topbutton btn btn-block btn-primary" data-toggle="modal" data-target="#addUser">添加</button>
-  </div>
-  <div class="col-lg-1 col-md-3">
-    <button id="testEvent" type="button" class="topbutton btn btn-block btn-primary">Test</button>
-  </div>
-  <div class="col-lg-1 col-md-3">
-    <button id="testbt" type="button" class="topbutton btn btn-block btn-primary">Notice</button>
-  </div>
-</div>
   <!-- Customer List -->
-  {% include "erp/customer/list.html" %}
+  {% include "erp/customer/customer_list.html" %}
   {% include "erp/customer/add.html" %}
   {% include "erp/customer/edit.html" %}
   {% include "erp/customer/del.html" %}
