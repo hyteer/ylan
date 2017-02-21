@@ -90,9 +90,9 @@ class RegisterForm(ModelForm):
             #'username': forms.TextInput(attrs={'class':'form-control','required':True,'placeholder':'登录名,英文小写字符'}),
             #'password':forms.PasswordInput(attrs={'class':'form-control','required':True,'placeholder':'6位以上英文字符'}),
             'confirm_password':forms.PasswordInput(attrs={'class':'form-control','required':True,'placeholder':'确认密码'}),
-            'name':forms.PasswordInput(attrs={'class':'form-control','required':True,'placeholder':'姓名/公司'}),
-            'phone':forms.PasswordInput(attrs={'class':'form-control','required':True,'placeholder':'电话'}),
-            'email':forms.PasswordInput(attrs={'class':'form-control','required':False,'placeholder':'Email'}),
+            'name':forms.TextInput(attrs={'class':'form-control','required':True,'placeholder':'姓名/公司'}),
+            'phone':forms.TextInput(attrs={'class':'form-control','required':True,'placeholder':'电话'}),
+            'email':forms.EmailInput(attrs={'class':'form-control','required':False,'placeholder':'Email'}),
         }
     def clean_username(self): # check if username dos not exist before
         try:

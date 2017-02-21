@@ -85,9 +85,10 @@ def user_logout(req):
 def register(req):
     resp = {"error":0,"msg":"收到消息!"}
     if req.method == 'POST':
+        import pdb; pdb.set_trace()
         print("Recieved a post request...")
         print("Data:%s" % req.body)
-        import pdb; pdb.set_trace()
+
         data = json.loads(req.body)
 
         try:

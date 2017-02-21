@@ -76,16 +76,24 @@
 $(document).ready(function(){
   $('#register button').click(function(e){
     e.preventDefault();
-    var dataJson = $('#register').serializeJson();
-    console.log("Data:")
-    console.log(dataJson)
-    register(dataJson)
+    //var dataJson = $('#register').serializeJson();
+    //console.log("Data:")
+    //console.log(dataJson)
+    //var form=document.getElementById("register");
+    //var formdata=new FormData(form);
+    //console.log('Formdata:')
+    //console.log(formdata)
+    register()
   })
 });
 
 function register(data){
   var url = '/erp/register/'
-	axios.post(url, data,AXIOS_CONFIG).then(function (response) {
+  var form=document.getElementById("register");
+  var formdata=new FormData(form);
+  console.log('Formdata:')
+  console.log(formdata)
+	axios.post(url, formdata,AXIOS_CONFIG).then(function (response) {
     if(response.data.error == 0){
       console.log("注册成功！请登录系统");
       toastr.success(response.data.msg)
