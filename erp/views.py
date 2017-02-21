@@ -6,6 +6,7 @@ render_to_response
 from django.http import HttpResponse
 from django.template import loader, Context
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #from django.contrib.messages import constants as messages
 from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.decorators import login_required
@@ -139,11 +140,28 @@ def product(req):
 #### 客户管理页 ####
 @login_required(redirect_field_name='/erp/login')
 def customer(req):
-    cutomers = Customer.objects.all()
+    customers = Customer.objects.all()
     #userform = UserForm(prefix='user')
     #form = CustomerForm()
     custform = CustForm(prefix='cust')
-    return render(req, 'erp/customer.html',{'customers':cutomers,'custform':custform})
+    return render(req, 'erp/customer.html',{'customers':customers,'custform':custform})
+
+@login_required(redirect_field_name='/erp/login')
+def custlist(req):
+    cutomer_list = Customer.objects.all()
+    paginator = Paginator(cutomer_list,12)
+    #userform = UserForm(prefix='user')
+    #form = CustomerForm()
+    page = req.GET.get('page')
+    try:
+        customers = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        customers = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        customers = paginator.page(paginator.num_pages)
+    return render(req, 'erp/customer/custlist.html', {'customers': customers})
 
 #### 添加用户 ####
 @transaction.atomic

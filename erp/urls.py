@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^test/$', views.test, name='test'),
     url(r'^(?P<question_id>[0-9]+)/results/$', views.results, name='results'),
     url(r'^custinfo/(?P<username>[a-z]+)/$', views.custinfo, name='custinfo'),
+    url(r'^custlist/$', views.custlist, name='custlist'),
     url(r'^trans_test/$', views.trans_test, name='trans_test'),
     url(r'^ajax_test/$', views.ajax_test, name='ajax_test'),
     url(r'^django_ajax/$', views.django_ajax, name='django_ajax'),
