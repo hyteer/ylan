@@ -56,9 +56,11 @@ th.toolheader{padding-right: 30px}
                   <td>{{ customer.email }}</td>
                   <td>{{ customer.role.name }}</td>
                   {% if customer.status == 0 %}
-                  <td><span class="label label-danger">{{ customer.status_name }}</span></td>
-                  {% else %}
+                  <td><span class="label label-warning">{{ customer.status_name }}</span></td>
+                  {% elif customer.status == 1 %}
                   <td><span class="label label-success">{{ customer.status_name }}</span></td>
+                  {% else %}
+                  <td><span class="label label-danger">{{ customer.status_name }}</span></td>
                   {% endif %}
                   <td>
                     <div class="row pull-right" style="margin:0">

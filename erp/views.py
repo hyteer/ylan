@@ -88,7 +88,7 @@ def register(req):
     if req.method == 'POST':
         import pdb; pdb.set_trace()
         print("Recieved a post request...")
-        print("Data:%s" % req.body)
+        #print("Data:%s" % req.body)
 
         data = json.loads(req.body)
 
