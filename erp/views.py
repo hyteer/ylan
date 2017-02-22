@@ -141,6 +141,7 @@ def product(req):
 @login_required(redirect_field_name='/erp/login')
 def customer(req):
     cutomer_list = Customer.objects.all()
+    role_list = Role.objects.all()
     paginator = Paginator(cutomer_list,16)
     #userform = UserForm(prefix='user')
     #form = CustomerForm()
@@ -154,7 +155,7 @@ def customer(req):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         customers = paginator.page(paginator.num_pages)
-    return render(req, 'erp/customer/index.html', {'customers': customers,'custform':custform})
+    return render(req, 'erp/customer/index.html', {'customers': customers, 'roles':role_list,'custform':custform})
 
 @login_required(redirect_field_name='/erp/login')
 def custlist(req):
@@ -350,36 +351,6 @@ def trans_test(request):
 
     add_children()
 
-def create_post(request):
-    if request.method == 'POST':
-        post_text = request.POST.get('the_post')
-        response_data = {}
-        print("Post Text:",request.body)
-
-        #post = Post(text=post_text, author=request.user)
-        #post.save()
-
-        #response_data['result'] = 'Create post successful!'
-        #response_data['postpk'] = post.pk
-        #response_data['text'] = post.text
-        #response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p')
-        #response_data['author'] = post.author.username
-        #custer = get_object_or_404(Customer,name=post_text)
-        response_data['result'] = 'Create post successful!'
-        response_data['postpk'] = '11'
-        response_data['text'] = post_text
-        response_data['created'] = str(datetime.datetime.now())
-        response_data['author'] = 'YT'
-
-        return HttpResponse(
-            json.dumps(response_data),
-            content_type="application/json"
-        )
-    else:
-        return HttpResponse(
-            json.dumps({"nothing to see": "this isn't happening"}),
-            content_type="application/json"
-        )
 
 @csrf_exempt
 def temptest(req):

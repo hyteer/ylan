@@ -12,6 +12,18 @@ class PostForm(forms.Form):
 class CustForm(ModelForm):
 
     style_class = {'class':'form-control'}
+    E = 'e'
+    A = 'a'
+    C = 'c'
+    SOURCES_CHOICES = (
+                  (A, 'A'),
+                  (E, 'E'),
+                  (C, 'CC'),
+                  )
+    CHOICES = {
+        'cus':'Customer',
+        'manager':'Manager',
+    }
     username = forms.CharField(label='账号',max_length=20,widget=forms.TextInput(attrs=style_class))
     #password = forms.CharField(label='密码', widget=forms.PasswordInput())
     password = forms.CharField(required=True,label='密码', widget=forms.PasswordInput(attrs=style_class),
@@ -24,6 +36,8 @@ class CustForm(ModelForm):
                       max_length=10,
                       error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
 
+    #role = forms.ChoiceField(widget=forms.Select(), choices=SOURCES_CHOICES, initial=SOURCES_CHOICES[2][0])
+    #role = forms.ChoiceField(widget=forms.Select(), choices=CHOICES, initial='cus')
 
     class Meta:
         model = Customer

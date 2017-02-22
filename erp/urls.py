@@ -16,7 +16,6 @@ urlpatterns = [
     url(r'^trans_test/$', views.trans_test, name='trans_test'),
     url(r'^ajax_test/$', views.ajax_test, name='ajax_test'),
     url(r'^django_ajax/$', views.django_ajax, name='django_ajax'),
-    url(r'^create_post/$', views.create_post, name='create_post'),
     url(r'^login2/$', auth_views.login),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),

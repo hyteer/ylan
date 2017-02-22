@@ -5,6 +5,10 @@ div.pagination {margin: 0 10px;}
 section.content{padding: 0 10px}
 div.box-footer{line-height: 30px;}
 th.toolheader{padding-right: 30px}
+div.tool-box{margin-top:10px;}
+ul.dropdown-menu a{color: #001F3F}
+
+
 
 </style>
 <div class="row" style="margin-top:0">
@@ -12,7 +16,25 @@ th.toolheader{padding-right: 30px}
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">客户列表</h3>
-
+              <div class="tool-box">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default">操作</button>
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <button type="button" data-toggle="modal" data-target="#addUser" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                </div>
+              </div>
               <div class="box-tools">
                 <div class="input-group input-group-sm  pull-left" style="width: 150px;">
                   <input type="text" name="table_search" class="form-control pull-left" placeholder="Search">
@@ -63,9 +85,9 @@ th.toolheader{padding-right: 30px}
                   <td><span class="label label-danger">{{ customer.status_name }}</span></td>
                   {% endif %}
                   <td>
-                    <div class="row pull-right" style="margin:0">
+                  <div class="row pull-right" style="margin:0">
                     <div class="button-list col-lg-4 col-md-4">
-                    <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editUser">编辑</button>
+                      <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editUser">编辑</button>
                     </div>
                     <div class="button-list col-lg-4 col-md-4">
                     <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#freezeUser">冻结</button>
