@@ -2,5 +2,5 @@ form label.control-label{
   padding: 2px 1px;
 }
 div.modal-content{padding:10px 20px}
-.modal-content input.form-control{width:90%;}
+.modal-content form{padding-right: 20px;}
 .modal-content form button{margin-left: 50px;}

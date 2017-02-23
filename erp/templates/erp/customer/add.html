@@ -20,37 +20,31 @@
                       {{ field.label }}</label>
                     <div class="col-sm-10">
                       {% if field.name == 'role' %}
-                      <select name="cas_selected">
+                      <select class="form-control" name="cust-role">
                         <option value="default" selected="selected">------</option>
                           {% for role in roles %}
-
-                          {% if role.id == 2 %}
-                          <option value="{{role.id}}" selected>{{role.name}}</option>
-                          {% else %}
-                          <option value="{{role.id}}">{{role.name}}</option>
-                          {% endif %}
+                            {% if role.id == 2 %}
+                            <option value="{{role.id}}" selected>{{role.name}}</option>
+                            {% else %}
+                            <option value="{{role.id}}">{{role.name}}</option>
+                            {% endif %}
                           {% endfor %}
                       </select>
                       {% else %}
                      {{ field }}
+                     {% endif %}
                     </div>
-                    {% endif %}
+
                 </div>
                 {% endfor %}
               </div>
 
-
-
-              {% buttons %}
-                <button type="submit" class="btn btn-primary">
-                  {% bootstrap_icon "star" %} Submit
-                </button>
-              {% endbuttons %}
-            </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="confirm btn btn-primary">保存</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+                <button type="button" class="confirm btn btn-primary">保存AJAX</button>
             </div>
+            </form>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>

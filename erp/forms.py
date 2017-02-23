@@ -24,17 +24,18 @@ class CustForm(ModelForm):
         'cus':'Customer',
         'manager':'Manager',
     }
-    username = forms.CharField(label='账号',max_length=20,widget=forms.TextInput(attrs=style_class))
+    username = forms.CharField(label='账号',max_length=20,widget=forms.TextInput(attrs={
+    'class':'form-control','required':True,'placeholder':'真实姓名或公司名'}),)
     #password = forms.CharField(label='密码', widget=forms.PasswordInput())
-    password = forms.CharField(required=True,label='密码', widget=forms.PasswordInput(attrs=style_class),
-                          min_length=6,
-                          max_length=10,
-                          error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
-    confirm_password = forms.CharField(required=True,label='确认密码',
-                      widget=forms.PasswordInput(attrs=style_class),
-                      min_length=6,
-                      max_length=10,
-                      error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
+    password = forms.CharField(required=True,label='密码', widget=forms.PasswordInput(
+                attrs={'class':'form-control','required':True,'placeholder':'不低于6位数'}),
+                min_length=6,max_length=10,
+                error_messages={'required': '密码不能为空.','min_length': "至少6位"})
+    confirm_password = forms.CharField(
+                required=True,label='确认密码',widget=forms.PasswordInput(
+                attrs={'class':'form-control','required':True,'placeholder':'不低于6位数'}),
+                min_length=6,max_length=10,
+                error_messages={'required': '密码不能为空.', 'min_length': "至少6位"})
 
     #role = forms.ChoiceField(widget=forms.Select(), choices=SOURCES_CHOICES, initial=SOURCES_CHOICES[2][0])
     #role = forms.ChoiceField(widget=forms.Select(), choices=CHOICES, initial='cus')
@@ -44,6 +45,18 @@ class CustForm(ModelForm):
         #fields = ['id','user','role','name', 'phone', 'email','country']
         fields = ['username','password','confirm_password','role','name', 'phone', 'email','country']
         exclude = ('user',)
+        widgets = {
+            'name':forms.TextInput(attrs={'class':'form-control','required':True,'placeholder':'真实姓名或公司名'}),
+            'phone':forms.TextInput(attrs={'class':'form-control','required':True,'placeholder':'联系电话'}),
+            'email':forms.EmailInput(attrs={'class':'form-control','required':False,'placeholder':'Email'}),
+            'country':forms.Select(attrs={'class':'form-control','required':False}),
+        }
+        labels = {
+            'name': '姓名',
+            'phone': '电话',
+            'role': '角色',
+            'country': '国家',
+        }
     def clean_username(self): # check if username dos not exist before
         try:
             User.objects.get(username=self.cleaned_data['username']) #get user from user model
@@ -63,7 +76,7 @@ class CustForm(ModelForm):
         if not username:
             self._errors['username'] = self.error_class([u"请输入用户名!"])
         if password != confirm_password:
-            raise forms.ValidationError(u'Passwords are not equal')
+            raise forms.ValidationError(u'两次输入的密码不一致!')
         return cleaned_data
 
     def save(self):

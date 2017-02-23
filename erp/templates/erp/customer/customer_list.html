@@ -1,6 +1,6 @@
 <style>
-.row tr button{padding:3px 5px;width:50px;height:60%;font-size:12px}
-#userlist .button-list{padding:0 8px}
+.row tr button{padding:3px 2px;width:50px;height:60%;font-size:12px}
+#userlist .button-list{padding:0 3px}
 div.pagination {margin: 0 10px;}
 section.content{padding: 0 10px}
 div.box-footer{line-height: 30px;}
@@ -90,7 +90,11 @@ ul.dropdown-menu a{color: #001F3F}
                       <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editUser">编辑</button>
                     </div>
                     <div class="button-list col-lg-4 col-md-4">
+                    {% ifequal customer.status 0 %}
+                    <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#activateUser">激活</button>
+                    {% else %}
                     <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#freezeUser">冻结</button>
+                    {% endifequal %}
                     </div>
                     <div class="button-list col-lg-4 col-md-4">
                     <button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#delUser">删除</button>

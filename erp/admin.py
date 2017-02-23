@@ -22,7 +22,7 @@ class CustomerAdmin(admin.ModelAdmin):
     ]
     #inlines = ('客户类型', {'fields':[FollowRecordsInline]})
     #inlines = [FollowRecordsInline]
-    list_display = ('display_name', 'user', 'role_name', 'phone', 'email', 'country','status')
+    list_display = ('display_name', 'user', 'role_name', 'phone', 'email', 'country','status','created_time')
     #fields = ['question_text','pub_date']
     list_filter = ['country']
     search_fields = ['name']

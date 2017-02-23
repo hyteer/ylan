@@ -140,9 +140,9 @@ def product(req):
 #### 客户管理页 ####
 @login_required(redirect_field_name='/erp/login')
 def customer(req):
-    cutomer_list = Customer.objects.all()
+    cutomer_list = Customer.objects.order_by('-pk')
     role_list = Role.objects.all()
-    paginator = Paginator(cutomer_list,16)
+    paginator = Paginator(cutomer_list,15)
     #userform = UserForm(prefix='user')
     #form = CustomerForm()
     custform = CustForm(prefix='cust')
@@ -159,8 +159,8 @@ def customer(req):
 
 @login_required(redirect_field_name='/erp/login')
 def custlist(req):
-    cutomer_list = Customer.objects.all()
-    paginator = Paginator(cutomer_list,16)
+    cutomer_list = Customer.objects.order_by('-pk')
+    paginator = Paginator(cutomer_list,15)
     #userform = UserForm(prefix='user')
     #form = CustomerForm()
     custform = CustForm(prefix='cust')
@@ -179,6 +179,7 @@ def custlist(req):
 @transaction.atomic
 @login_required(redirect_field_name='/erp/login')
 def customer_add(req):
+    resp = {"code":0,"msg":"ok"}
     if req.method == 'POST':
         #import pdb; pdb.set_trace()
         #form = UserForm(req.POST)
@@ -194,9 +195,11 @@ def customer_add(req):
                 return HttpResponse('{"code":0,"msg":"created..."}')
         else:
             #import pdb; pdb.set_trace()
-            errors = {'errors':form.errors['__all__']}
-            print(errors)
-            return HttpResponse('{"code":11,"errors":errors}')
+            resp['errors'] = form.errors
+            resp['code'] = 4000
+            resp['msg'] = 'fail.'
+            #print(errors)
+            return HttpResponse(resp)
 
     else:
         return HttpResponse("非法请求!")

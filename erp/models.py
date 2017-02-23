@@ -25,6 +25,8 @@ class Customer(models.Model):
         return self.name
     def role_name(self):
         return self.role.name
+    def created_time(self):
+        return self.user.date_joined
     def status_name(self):
         if self.status == 0:
             return '未激活'
