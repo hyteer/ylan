@@ -114,9 +114,10 @@ ul.dropdown-menu a{color: #001F3F}
               <ul class="pagination pagination-sm no-margin pull-right">
 
                 {% if customers.has_previous %}<li><a href="?page={{ customers.previous_page_number }}">«</a></li>{% endif %}
-                <li><a href="#">1</a></li>
+
+                <li><a class="pgStart" href="#">1</a></li>
                 <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
+                <li><a class="pgEnd" href="#">3</a></li>
                 {% if customers.has_next %}<li><a href="?page={{ customers.next_page_number }}">»</a></li>{% endif %}
               </ul>
               </ul>
@@ -125,3 +126,15 @@ ul.dropdown-menu a{color: #001F3F}
           <!-- /.box -->
         </div>
       </div>
+<script>
+var num = '{{ customers.number }}'
+
+$(document).ready(function(){
+  $('.pgStart').click(function(){
+    console.log("Number:"+num)
+  })
+
+
+});
+
+</script>
