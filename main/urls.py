@@ -15,12 +15,25 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from main import views
+from rest_framework import routers
+from .serializers import UserSerializer, GroupSerializer
+from main import views,rest_views
 #from demo.views import HomePageView, DefaultFormView
+
+
+# Routers provide a way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'users', rest_views.UserViewSet)
+router.register(r'customers', rest_views.CustViewSet)
+router.register(r'groups', rest_views.GroupViewSet)
+router.register(r'role', rest_views.RoleViewSet)
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
+    url(r'^api/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^login/$', views.login, name='login'),
     url(r'^test/$', views.test, name='test'),
     url(r'^demo/', include('demo.urls')),
